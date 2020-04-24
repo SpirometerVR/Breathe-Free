@@ -59,7 +59,7 @@ public class RocketController : MonoBehaviour
     // Hold OSC data in spirometer object
     private OSC spirometer;
     // Get the rocket as a rigidbody
-    private Rigidbody rocketBody;
+    public Rigidbody rocketBody;
 
     private ScoreBoard diamondScores;
     private ScoreBoard finalScores;
@@ -79,7 +79,6 @@ public class RocketController : MonoBehaviour
         gameRocket.enabled = true;
 
         // Get rigid body and audio components for the rocket.
-        rocketBody = GetComponent<Rigidbody>();
         audio = GetComponent<AudioSource>();
 
         // Find the score board objects for each respective scoreboard.
