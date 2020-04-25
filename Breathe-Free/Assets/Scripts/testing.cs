@@ -13,8 +13,8 @@ public class testing : MonoBehaviour
     private Animator lastAnimator;
     private MenuAnimatorFunctions animatorFunctions;
     public static AudioSource audio;
-    private int inhaleAmount;
-    private int exhaleAmount;
+    private int inhaleTime;
+    private int exhaleTime;
     private int numOfCycles;
     public int gameIndex = -1;
 
@@ -27,8 +27,8 @@ public class testing : MonoBehaviour
     {
         lastAnimator = null;
         audio = GetComponent<AudioSource>();
-        inhaleAmount = 1;
-        exhaleAmount = 1;
+        inhaleTime = 1;
+        exhaleTime = 1;
         numOfCycles = 1;
     }
 
@@ -117,6 +117,9 @@ public class testing : MonoBehaviour
     {
         audio.PlayOneShot(audio.clip);
         yield return new WaitForSeconds(1f);
+        mechanics.inhaleTime = inhaleTime;
+        mechanics.exhaleTime = exhaleTime;
+        mechanics.numOfCycles = numOfCycles;
         if (gameIndex == 0)
         {
             SceneManager.LoadScene("FruitWorld");
@@ -140,20 +143,20 @@ public class testing : MonoBehaviour
         yield return new WaitForSeconds(0);
         if(index==3)
         {
-            if (inhaleAmount > 1)
+            if (inhaleTime > 1)
             {
-                inhaleAmount -= 1;
+                inhaleTime -= 1;
             }
-            go.transform.parent.GetChild(2).GetComponent<TextMeshProUGUI>().text = inhaleAmount.ToString();
+            go.transform.parent.GetChild(2).GetComponent<TextMeshProUGUI>().text = inhaleTime.ToString();
 
         }
         else if (index == 5)
         {
-            if(exhaleAmount > 1)
+            if(exhaleTime > 1)
             {
-                exhaleAmount -= 1;
+                exhaleTime -= 1;
             }
-            go.transform.parent.GetChild(2).GetComponent<TextMeshProUGUI>().text = exhaleAmount.ToString();
+            go.transform.parent.GetChild(2).GetComponent<TextMeshProUGUI>().text = exhaleTime.ToString();
 
         }
         else if (index == 7)
@@ -167,20 +170,20 @@ public class testing : MonoBehaviour
         }
         else if (index == 4)
         {
-            if (inhaleAmount <= 7)
+            if (inhaleTime <= 7)
             {
-                inhaleAmount += 1;
+                inhaleTime += 1;
             }
-            go.transform.parent.GetChild(2).GetComponent<TextMeshProUGUI>().text = inhaleAmount.ToString();
+            go.transform.parent.GetChild(2).GetComponent<TextMeshProUGUI>().text = inhaleTime.ToString();
 
         }
         else if (index == 6)
         {
-            if (exhaleAmount <= 7)
+            if (exhaleTime <= 7)
             {
-                exhaleAmount += 1;
+                exhaleTime += 1;
             }
-            go.transform.parent.GetChild(2).GetComponent<TextMeshProUGUI>().text = exhaleAmount.ToString();
+            go.transform.parent.GetChild(2).GetComponent<TextMeshProUGUI>().text = exhaleTime.ToString();
 
         }
         else if (index == 8)

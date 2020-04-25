@@ -6,20 +6,29 @@ public class mechanics : MonoBehaviour
 {
     
     public float flag = 0;
-    public bool playPluck = false;
-    public List<GameObject> stones;
-    private bool move = false;
-    private int count = 0;
-    private int fruitCount = 0;
+    public bool playPluck = false;                  // wether or not to play the pluck sound
+    public List<GameObject> stones;                 // all the stones
+    public List<GameObject> fru;                    // all the fruits
+    public static int inhaleTime;
+    public static int exhaleTime;
+    public static int numOfCycles;
+
+
+    private bool stoneHandUpdate;                   // aids in calculating the distance of stone-hand just once.
+    private bool stoneFruitUpdate;                  // aids in calculating the distance of stone-fruit just once.
+    private bool canMove = false;                   // can the stone move from its position towards the hand.
+    private int count = 0;                          // to keep track of stones count
+    private int fruitCount = 0;                     // to keep track of furits count
     private ParabolaController cont;
     private OSC oscScript;
     private GameObject oscGameObject;
-    private bool canShoot = false;
-    public List<GameObject> fru;
-    [SerializeField] private float speed = 3f;
-    [SerializeField] private List<GameObject> vfx;
+    private bool canShoot = false;                  // determines wether or not the stone can be launched based on its position
+    private select s; 
+    private float stoneHandDistance;                // for distance between stone and hand
+    private float stoneFruitDistance;               // for distance between stone and fruit
+
+    [SerializeField] private List<GameObject> vfx;  // array of particle system attached to stone
     [SerializeField] private GameObject sel;
-    private select s;
 
     private void Awake()
     {
@@ -30,7 +39,16 @@ public class mechanics : MonoBehaviour
         oscScript = oscGameObject.GetComponent<OSC>();
         oscScript.SetAddressHandler("/Spirometer/C", BreathData);
         s = sel.GetComponent<select>();
+
+        inhaleTime = 3;
+        exhaleTime = 3;
+
+        stoneHandUpdate = true;
         
+        stoneHandDistance = 0;
+        stoneFruitDistance = 0;
+
+
     }
 
 
@@ -58,7 +76,7 @@ public class mechanics : MonoBehaviour
     {
         OVRInput.Update();
 
-        // inhale the stone
+        // inhale
         if (Input.GetKey(KeyCode.Space) || OVRInput.Get(OVRInput.RawButton.RIndexTrigger) || flag==1)
         {
             if (count == stones.Count)
@@ -67,43 +85,48 @@ public class mechanics : MonoBehaviour
             }
             else 
             {
-                //originalObjPosition = obj.transform.position;
                 cont = stones[count].GetComponent<ParabolaController>();
-                move = true;
+                canMove = true;
                 vfx[count].SetActive(true);
                 vfx[count].transform.GetChild(0).gameObject.SetActive(false);
+                
+                if (stoneHandUpdate)
+                {
+                    stoneHandDistance = Vector3.Distance(stones[count].transform.position, transform.position);
+                    stoneHandDistance -= 0.2f;
+                    stoneHandUpdate = false;
 
-                stones[count].transform.position = Vector3.MoveTowards(stones[count].transform.position, this.transform.position, Time.deltaTime * speed);
+                }
+
+                if (Vector3.Distance(stones[count].transform.position, transform.position) > 0.3)
+                {
+                    stones[count].transform.position = Vector3.MoveTowards(stones[count].transform.position, this.transform.position, Time.deltaTime * (stoneHandDistance/inhaleTime));
+                }
+
 
 
             }
 
         }
-        //if (move)
-        //{
-        //    stones[count].transform.position = Vector3.MoveTowards(stones[count].transform.position, this.transform.position, Time.deltaTime * speed);
-        //    //stones[count].transform.position += (transform.position - stones[count].transform.position).normalized * 5f * Time.deltaTime;
-        //    if (Vector3.Distance(transform.position, stones[count].transform.position) <=0.1f)
-        //    {
-        //        move = false;
-        //    }
-        //}
 
-        else if(move && !Input.GetKey(KeyCode.Space) && Vector3.Distance(stones[count].transform.position, transform.position) > 0.2f)
+        // called if player stops inhaling before stone reaches the player
+
+        //else if (move && flag!=1 && Vector3.Distance(stones[count].transform.position, transform.position) > 0.2f)
+        else if(canMove && !Input.GetKey(KeyCode.Space) && Vector3.Distance(stones[count].transform.position, transform.position) > 0.3f)
         {
             stones[count].GetComponent<Rigidbody>().useGravity = true;
             count++;
-            move = false;
+            canMove = false;
             vfx[count].SetActive(false);
+            stoneHandUpdate = true;
         }
 
 
-        // When the stone has arrived near the player
-
-        if ((Input.GetKey(KeyCode.D) || OVRInput.Get(OVRInput.RawButton.A) || flag==3)  && Vector3.Distance(stones[count].transform.position, this.transform.position)<=0.2f && fruitCount<fru.Count && s.stay)
+        // When stone has arrived
+        if ((Input.GetKey(KeyCode.D) || OVRInput.Get(OVRInput.RawButton.A) || flag==3)  && Vector3.Distance(stones[count].transform.position, this.transform.position)<=0.3f && fruitCount<fru.Count && s.stay)
         {
             vfx[count].transform.GetChild(0).gameObject.SetActive(true);
-            move = false;
+            canMove = false;
             canShoot = true;
             GameObject.Find("Trails").GetComponent<ParticleSystem>().Play();
             GameObject point1 = new GameObject();
@@ -117,30 +140,47 @@ public class mechanics : MonoBehaviour
             point1.transform.parent = root.transform;
             point2.transform.parent = root.transform;
             point3.transform.parent = root.transform;
-            point1.transform.position = transform.position;
+            point1.transform.position = stones[count].transform.position;
             point3.transform.position = s.go.transform.position;
             point2.transform.position=new Vector3((point1.transform.position.x+point3.transform.position.x)/2,point3.transform.position.y+0.3f, (point1.transform.position.z + point3.transform.position.z) /2);
             
-            cont.ParabolaRoot = root;
-            cont.Speed = 7f;
-            cont.Autostart = true;
-            cont.Animation = true;
+           
     
             if (!cont.enabled)
             {
                 cont.enabled = true;
             }
+            if (stoneFruitUpdate)
+            {
+                stoneFruitDistance = Vector3.Distance(stones[count].transform.position, s.go.transform.position);
+                stoneFruitDistance -= 1f;               
+                cont.Speed = stoneFruitDistance/exhaleTime;
+                stoneFruitUpdate = false;
+            }
+            cont.ParabolaRoot = root;
+            cont.Autostart = true;
+            cont.Animation = true;
+            cont.Speed = stoneFruitDistance / exhaleTime;
         }
 
+
+        // when player stops exhaling before stone hits the fruit
+        //else if (canShoot && flag!=3 && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
         else if (canShoot && !Input.GetKey(KeyCode.D) && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
         {
             stones[count].GetComponent<Rigidbody>().useGravity = true;
-            count++;
+            
             vfx[count].SetActive(false);
+            count++;
+            cont.enabled = false;
+            canShoot = false;
+            stoneHandUpdate = true;
+            stoneFruitUpdate = true;
+
         }
 
 
-        //When the stone has hit the  fruit
+        //When stone has hit the fruit
         if (count<stones.Count && stones[count] && Vector3.Distance(stones[count].transform.position, s.go.transform.position) < 1f && fruitCount<fru.Count)
         {
             var particleEffect = stones[count].transform.GetChild(0);
@@ -157,14 +197,12 @@ public class mechanics : MonoBehaviour
             StartCoroutine(destory(vfx[count]));
             count++;
             s.go.GetComponent<Rigidbody>().useGravity = true;
-            //fru[fruitCount].GetComponent<Rigidbody>().isKinematic = true;
             fruitCount++;
+            stoneHandUpdate = true;
+            stoneFruitUpdate = true;
+
 
         }
-        
-
-
-
 
     }
     IEnumerator destory(GameObject go)
