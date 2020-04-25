@@ -14,6 +14,7 @@ public class mechanics : MonoBehaviour
     private ParabolaController cont;
     private OSC oscScript;
     private GameObject oscGameObject;
+    private bool canShoot = false;
     public List<GameObject> fru;
     [SerializeField] private float speed = 3f;
     [SerializeField] private List<GameObject> vfx;
@@ -88,21 +89,22 @@ public class mechanics : MonoBehaviour
         //    }
         //}
 
-        else if(!Input.GetKey(KeyCode.Space) && Vector3.Distance(stones[count].transform.position, transform.position) > 0.2f)
+        else if(move && !Input.GetKey(KeyCode.Space) && Vector3.Distance(stones[count].transform.position, transform.position) > 0.2f)
         {
-            //stones[count].GetComponent<Rigidbody>().
+            stones[count].GetComponent<Rigidbody>().useGravity = true;
+            count++;
+            move = false;
+            vfx[count].SetActive(false);
         }
 
-        if (stones[count] && Vector3.Distance(stones[count].transform.position, transform.position) <= 0.01f)
-        {
-            //GameObject.Find("Trails").SetActive(false);
-        }
+
         // When the stone has arrived near the player
 
-        if ((Input.GetKeyDown(KeyCode.D) || OVRInput.Get(OVRInput.RawButton.A) || flag==3)  && Vector3.Distance(stones[count].transform.position, this.transform.position)<=0.1f && fruitCount<fru.Count && s.stay)
+        if ((Input.GetKey(KeyCode.D) || OVRInput.Get(OVRInput.RawButton.A) || flag==3)  && Vector3.Distance(stones[count].transform.position, this.transform.position)<=0.2f && fruitCount<fru.Count && s.stay)
         {
             vfx[count].transform.GetChild(0).gameObject.SetActive(true);
             move = false;
+            canShoot = true;
             GameObject.Find("Trails").GetComponent<ParticleSystem>().Play();
             GameObject point1 = new GameObject();
             GameObject point2 = new GameObject();
@@ -128,12 +130,16 @@ public class mechanics : MonoBehaviour
             {
                 cont.enabled = true;
             }
-    
-          
-
         }
-        
-        
+
+        else if (canShoot && !Input.GetKey(KeyCode.D) && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
+        {
+            stones[count].GetComponent<Rigidbody>().useGravity = true;
+            count++;
+            vfx[count].SetActive(false);
+        }
+
+
         //When the stone has hit the  fruit
         if (count<stones.Count && stones[count] && Vector3.Distance(stones[count].transform.position, s.go.transform.position) < 1f && fruitCount<fru.Count)
         {
@@ -155,6 +161,7 @@ public class mechanics : MonoBehaviour
             fruitCount++;
 
         }
+        
 
 
 
