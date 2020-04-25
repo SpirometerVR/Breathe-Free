@@ -17,12 +17,15 @@ public class mechanics : MonoBehaviour
     private bool stoneHandUpdate;                   // aids in calculating the distance of stone-hand just once.
     private bool stoneFruitUpdate;                  // aids in calculating the distance of stone-fruit just once.
     private bool canMove = false;                   // can the stone move from its position towards the hand.
+    private bool canShoot = false;                  // determines wether or not the stone can be launched based on its position
+    private bool canSummon = true;                  // can summon the stone or not
+
     private int count = 0;                          // to keep track of stones count
     private int fruitCount = 0;                     // to keep track of furits count
     private ParabolaController cont;
     private OSC oscScript;
     private GameObject oscGameObject;
-    private bool canShoot = false;                  // determines wether or not the stone can be launched based on its position
+    
     private select s; 
     private float stoneHandDistance;                // for distance between stone and hand
     private float stoneFruitDistance;               // for distance between stone and fruit
@@ -77,7 +80,7 @@ public class mechanics : MonoBehaviour
         OVRInput.Update();
 
         // inhale
-        if (Input.GetKey(KeyCode.Space) || OVRInput.Get(OVRInput.RawButton.RIndexTrigger) || flag==1)
+        if (canSummon && Input.GetKey(KeyCode.Space) || OVRInput.Get(OVRInput.RawButton.RIndexTrigger) || flag==1)
         {
             if (count == stones.Count)
             {
@@ -126,8 +129,11 @@ public class mechanics : MonoBehaviour
         if ((Input.GetKey(KeyCode.D) || OVRInput.Get(OVRInput.RawButton.A) || flag==3)  && Vector3.Distance(stones[count].transform.position, this.transform.position)<=0.3f && fruitCount<fru.Count && s.stay)
         {
             vfx[count].transform.GetChild(0).gameObject.SetActive(true);
+
             canMove = false;
             canShoot = true;
+            canSummon = false;
+
             GameObject.Find("Trails").GetComponent<ParticleSystem>().Play();
             GameObject point1 = new GameObject();
             GameObject point2 = new GameObject();
@@ -168,11 +174,12 @@ public class mechanics : MonoBehaviour
         //else if (canShoot && flag!=3 && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
         else if (canShoot && !Input.GetKey(KeyCode.D) && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
         {
-            stones[count].GetComponent<Rigidbody>().useGravity = true;
-            
+            stones[count].GetComponent<Rigidbody>().useGravity = true;            
             vfx[count].SetActive(false);
             count++;
+
             cont.enabled = false;
+            canSummon = true;
             canShoot = false;
             stoneHandUpdate = true;
             stoneFruitUpdate = true;
@@ -198,6 +205,9 @@ public class mechanics : MonoBehaviour
             count++;
             s.go.GetComponent<Rigidbody>().useGravity = true;
             fruitCount++;
+
+            canShoot = false;
+            canSummon = true;
             stoneHandUpdate = true;
             stoneFruitUpdate = true;
 
