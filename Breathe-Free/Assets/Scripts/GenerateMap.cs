@@ -47,7 +47,7 @@ public class GenerateMap : MonoBehaviour
         // Generate tiles on either side of current tile on Z and X axes.
         for (int x = -halfTilesX; x <= halfTilesX; x++)
         {
-            for (int z = -halfTilesZ; z <= halfTilesZ; z++)
+            for (int z = -halfTilesZ; z <= halfTilesZ + 2; z++)
             {
                 Vector3 pos = new Vector3((x * (planeSize) + startPos.x), 0, (z * (planeSize) + startPos.z));
                 GameObject gbj;
@@ -96,7 +96,7 @@ public class GenerateMap : MonoBehaviour
             // Generate tiles on either size of current tile on Z axis.
             for (int x = -halfTilesX; x <= halfTilesX; x++)
             {
-                for (int z = -halfTilesZ; z <= halfTilesZ; z++)
+                for (int z = -halfTilesZ; z <= halfTilesZ + 2; z++)
                 {
                     Vector3 pos = new Vector3((x * (planeSize) + playerX), 0, (z * (planeSize) + playerZ));
 

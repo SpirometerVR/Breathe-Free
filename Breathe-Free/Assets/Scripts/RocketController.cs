@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RocketController : MonoBehaviour
 {
+    // Adjusted all private GameObjects to be Public due to access errors.
+
     // Flags for exhale and inhale phases.
     public bool exhalePhase = false;
     public bool inhalePhase = true;
@@ -51,19 +53,19 @@ public class RocketController : MonoBehaviour
     private float steadyThresh = 1340f;
     private float speedMultiplier = 4f;
 
-    private AudioSource audio;
-    private Renderer gameRocket;
+    public AudioSource audio;
+    public Renderer gameRocket;
 
     // Create GameObject to find OSC
-    private GameObject OSC;
+    public GameObject OSC;
     // Hold OSC data in spirometer object
-    private OSC spirometer;
+    public OSC spirometer;
     // Get the rocket as a rigidbody
     public Rigidbody rocketBody;
 
-    private ScoreBoard diamondScores;
-    private ScoreBoard finalScores;
-    private ScoreBoard spedometer;
+    public ScoreBoard diamondScores;
+    public ScoreBoard finalScores;
+    public ScoreBoard spedometer;
 
     // Start is called before the first frame update
     void Start()

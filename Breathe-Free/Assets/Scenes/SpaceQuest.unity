@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.23236844, g: 0.23554417, b: 0.27230176, a: 1}
+  m_IndirectSpecularColor: {r: 0.23190945, g: 0.23507786, b: 0.27232572, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -353,7 +353,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 228129357}
-  m_LocalRotation: {x: -0.24459974, y: -0, z: -0, w: 0.96962416}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 110.21173}
   m_LocalScale: {x: 0.20000002, y: 0.20000002, z: 0.20000002}
   m_Children:
@@ -406,9 +406,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 317082000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d4ccc6de87c94078b057ccfc543cc83, type: 3}
+  m_Script: {fileID: 11500000, guid: 519fe7751d312b840b2c0900b62bc64f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inPort: 8000
+  outIP: 192.168.1.193
+  outPort: 8000
 --- !u!4 &317082002
 Transform:
   m_ObjectHideFlags: 0
@@ -454,16 +457,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outsidePlane:
   - {fileID: 2518502567993034146, guid: a36215309737b44e9b67d06d057607ff, type: 3}
-  - {fileID: 7487723761170735872, guid: 2b9b2ac9cce2a47cbb6c1dc1389f4185, type: 3}
-  - {fileID: 633584564305569147, guid: 3d4db9bc9a2694f44a52c281023972ef, type: 3}
-  - {fileID: 5248509226855553987, guid: 6ffc873f890ff48eba5c83f432fcca66, type: 3}
-  - {fileID: 8967923993010554262, guid: 056127872cd6f49ff87d1848d17b13e9, type: 3}
-  - {fileID: 8967923993010554262, guid: 056127872cd6f49ff87d1848d17b13e9, type: 3}
+  - {fileID: 2518502567993034146, guid: 46db0753f457e494994f9c307eba05d8, type: 3}
+  - {fileID: 7487723761170735872, guid: 1aae30c1eaf3b48a686caea6f9c2a2a0, type: 3}
+  - {fileID: 2518502567993034146, guid: c52213e2ac6194cca881e26215b81c5d, type: 3}
+  - {fileID: 2518502567993034146, guid: 6cd8d7b3a48f94aed9d36f6a29ab5d69, type: 3}
   - {fileID: 2518502567993034146, guid: 6a01ff0b202d94e3fb2804ef81fdc6ce, type: 3}
-  - {fileID: 7487723761170735872, guid: ee94c702290e14220af7a3ebad905204, type: 3}
-  - {fileID: 8967923993010554262, guid: 056127872cd6f49ff87d1848d17b13e9, type: 3}
-  - {fileID: 8967923993010554262, guid: 056127872cd6f49ff87d1848d17b13e9, type: 3}
-  - {fileID: 5248509226855553987, guid: 6ffc873f890ff48eba5c83f432fcca66, type: 3}
+  - {fileID: 2518502567993034146, guid: e6988a642ef034ec78f2c40268de5982, type: 3}
+  - {fileID: 2518502567993034146, guid: c52213e2ac6194cca881e26215b81c5d, type: 3}
+  - {fileID: 2518502567993034146, guid: 6cd8d7b3a48f94aed9d36f6a29ab5d69, type: 3}
+  - {fileID: 2518502567993034146, guid: 6cd8d7b3a48f94aed9d36f6a29ab5d69, type: 3}
   insidePlane:
   - {fileID: 2518502567993034146, guid: bfd6c93929fd648d9b3364d294894f27, type: 3}
   - {fileID: 2518502567993034146, guid: 7c1727e093f4a4ddabf1e9ecb376e4d0, type: 3}
@@ -10048,7 +10050,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 50000
+  far clip plane: 2500
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -10074,14 +10076,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.24459974, y: -0, z: -0, w: 0.96962416}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 38, z: -54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 228129361}
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 28.316002, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15425,6 +15427,12 @@ Rigidbody:
     type: 3}
   m_PrefabInstance: {fileID: 4596029874449955365}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &1510365282973298 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4583648933570849787, guid: 4c8596437b30446d7adc86bbe78e6123,
+    type: 3}
+  m_PrefabInstance: {fileID: 4596029874449955365}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1510365282973300 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4595818365191411313, guid: 4c8596437b30446d7adc86bbe78e6123,
@@ -15580,6 +15588,41 @@ PrefabInstance:
       propertyPath: rocketBody
       value: 
       objectReference: {fileID: 1510365282973296}
+    - target: {fileID: 4596029872646980628, guid: 4c8596437b30446d7adc86bbe78e6123,
+        type: 3}
+      propertyPath: gameRocket
+      value: 
+      objectReference: {fileID: 1510365282973298}
+    - target: {fileID: 4596029872646980628, guid: 4c8596437b30446d7adc86bbe78e6123,
+        type: 3}
+      propertyPath: audio
+      value: 
+      objectReference: {fileID: 1510365282973293}
+    - target: {fileID: 4596029872646980628, guid: 4c8596437b30446d7adc86bbe78e6123,
+        type: 3}
+      propertyPath: diamondScores
+      value: 
+      objectReference: {fileID: 1857364597}
+    - target: {fileID: 4596029872646980628, guid: 4c8596437b30446d7adc86bbe78e6123,
+        type: 3}
+      propertyPath: finalScores
+      value: 
+      objectReference: {fileID: 1726357780}
+    - target: {fileID: 4596029872646980628, guid: 4c8596437b30446d7adc86bbe78e6123,
+        type: 3}
+      propertyPath: spedometer
+      value: 
+      objectReference: {fileID: 1676877436}
+    - target: {fileID: 4596029872646980628, guid: 4c8596437b30446d7adc86bbe78e6123,
+        type: 3}
+      propertyPath: OSC
+      value: 
+      objectReference: {fileID: 317082000}
+    - target: {fileID: 4596029872646980628, guid: 4c8596437b30446d7adc86bbe78e6123,
+        type: 3}
+      propertyPath: spirometer
+      value: 
+      objectReference: {fileID: 317082001}
     - target: {fileID: 4596029872646980629, guid: 4c8596437b30446d7adc86bbe78e6123,
         type: 3}
       propertyPath: coinOne
