@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour
     private Vector3 zoomOffset = Vector3.Scale(offset, new Vector3(0f, 1.2f, 1.7f));
 
     private float speed = 10f;
-    private RocketController playerScript;
+    public RocketController playerScript;
 
     Camera mainCamera;
     private int zoom = 75;

@@ -48,8 +48,8 @@ public class RocketController : MonoBehaviour
     public bool breakIsOn = false;
 
     // Target threshold values for inhale and exhale.
-    private float exhaleThresh = 1470f;
-    private float inhaleTresh = 1200f;
+    private float exhaleThresh = 1500f;
+    private float inhaleTresh = 1180f;
     private float steadyThresh = 1340f;
     private float speedMultiplier = 4f;
 
@@ -142,12 +142,12 @@ public class RocketController : MonoBehaviour
 					breakStart = Time.time;
 				}
 
-				//TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF STATEMENT BELOW:
-				if (!Input.GetKey(KeyCode.UpArrow))
-				{
-					exhaleIsOn = false;
-				}
-			}
+                //TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF STATEMENT BELOW:
+                //if (!Input.GetKey(KeyCode.UpArrow))
+                //{
+                //	exhaleIsOn = false;
+                //}
+            }
 
             if (inhalePhase && cameraBounds())
             {
@@ -171,10 +171,10 @@ public class RocketController : MonoBehaviour
                 }
 
 				//TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF LOOP BELOW:
-				if (!Input.GetKey(KeyCode.Space))
-				{
-					inhaleIsOn = false;
-				}
+				//if (!Input.GetKey(KeyCode.Space))
+				//{
+				//	inhaleIsOn = false;
+				//}
 			}
 
             // If the player is neither exhaling nor inhaling:
@@ -270,7 +270,7 @@ public class RocketController : MonoBehaviour
         float breathVal = message.GetFloat(0);
 		// Debugging purposes.
 		speed = breathVal;
-		Debug.Log(transform.rotation.eulerAngles.y);
+		Debug.Log(breathVal);
 
         if (breathVal >= exhaleThresh)
         {

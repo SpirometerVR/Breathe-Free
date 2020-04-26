@@ -10008,9 +10008,9 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
-  - component: {fileID: 963194230}
   - component: {fileID: 963194231}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -10050,7 +10050,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 2500
+  far clip plane: 5000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -10097,6 +10097,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1510365282973292}
+  playerScript: {fileID: 1510365282973295}
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10109,6 +10110,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2a9c34df4095f47b9ca8f975175f5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Device: 0
+  m_PoseSource: 2
+  m_PoseProviderComponent: {fileID: 0}
+  m_TrackingType: 0
+  m_UpdateType: 0
+  m_UseRelativeTransform: 0
 --- !u!82 &963194231
 AudioSource:
   m_ObjectHideFlags: 0
@@ -14933,7 +14940,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1676877433}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
@@ -15421,6 +15428,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1510365282973295 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4596029872646980628, guid: 4c8596437b30446d7adc86bbe78e6123,
+    type: 3}
+  m_PrefabInstance: {fileID: 4596029874449955365}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510365282973292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c0d11c9b7a944990b75bda21af37057, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &1510365282973296 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 4596029872646980618, guid: 4c8596437b30446d7adc86bbe78e6123,
@@ -15622,7 +15641,7 @@ PrefabInstance:
         type: 3}
       propertyPath: spirometer
       value: 
-      objectReference: {fileID: 317082001}
+      objectReference: {fileID: 0}
     - target: {fileID: 4596029872646980629, guid: 4c8596437b30446d7adc86bbe78e6123,
         type: 3}
       propertyPath: coinOne

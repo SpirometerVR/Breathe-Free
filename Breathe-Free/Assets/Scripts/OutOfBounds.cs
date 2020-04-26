@@ -22,18 +22,27 @@ public class OutOfBounds : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Only print error when the camera view is out of bounds.
-        if(playerScript.inBounds)
-		{
+        if (!playerScript.gameOver)
+        {
+            // Only print error when the camera view is out of bounds.
+            if (playerScript.inBounds)
+            {
+                // Lock Rotation on X and Z Axis.
+                OutOfBoundsCanvas.transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
+                outOfBoundsText.text = "";
+            }
+            else
+            {
+                // Lock Rotation on X and Z Axis.
+                OutOfBoundsCanvas.transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
+                outOfBoundsText.text = "RETURN TO SHIP";
+            }
+        }
+        else
+        {
             // Lock Rotation on X and Z Axis.
             OutOfBoundsCanvas.transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
             outOfBoundsText.text = "";
-		}
-        else
-		{
-            // Lock Rotation on X and Z Axis.
-            OutOfBoundsCanvas.transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
-            outOfBoundsText.text = "RETURN TO SHIP";
-		}
+        }
     }
 }
