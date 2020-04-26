@@ -15651,7 +15651,7 @@ PrefabInstance:
         type: 3}
       propertyPath: remainingDiamonds
       value: 
-      objectReference: {fileID: 8082968845016491168, guid: feab7af7be4594c7c973e23bcb50d5c4,
+      objectReference: {fileID: 8082968845016491168, guid: 27b95b47292ee426e8a259df56f350b6,
         type: 3}
     - target: {fileID: 4596029872646980629, guid: 4c8596437b30446d7adc86bbe78e6123,
         type: 3}

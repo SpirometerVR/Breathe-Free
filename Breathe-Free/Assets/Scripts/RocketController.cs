@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RocketController : MonoBehaviour
 {
-    // Adjusted all private GameObjects to be Public due to access errors.
+    // Adjusted all private GameObjects & Script Objects to be Public due to Private access errors.
 
     // Flags for exhale and inhale phases.
     public bool exhalePhase = false;
@@ -307,6 +307,7 @@ public class RocketController : MonoBehaviour
 				rocketBody.isKinematic = true;
 				transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
 
+                //Destroy(other.gameObject.);
                 Destroy(other.gameObject);
                 audio.PlayOneShot(diamond, 5f);
 
@@ -328,6 +329,11 @@ public class RocketController : MonoBehaviour
 				rocketBody.isKinematic = true;
 				transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
             }
+        }
+        // Destroy rigidBody within Diamonds so as not to cause physics issues.
+        else if (other.gameObject.CompareTag("Asteroid Destroyer"))
+        {
+            Destroy(other.gameObject);
         }
         // If it collides with any other object.
         else
