@@ -38,13 +38,14 @@ public class mechanics : MonoBehaviour
     }
     void Start()
     {
+
         oscGameObject = GameObject.Find("OSC");
         oscScript = oscGameObject.GetComponent<OSC>();
         oscScript.SetAddressHandler("/Spirometer/C", BreathData);
         s = sel.GetComponent<select>();
 
-        inhaleTime = 3;
-        exhaleTime = 3;
+        inhaleTime = 2;
+        exhaleTime = 2;
 
         stoneHandUpdate = true;
         
@@ -101,9 +102,9 @@ public class mechanics : MonoBehaviour
 
                 }
 
-                if (Vector3.Distance(stones[count].transform.position, transform.position) > 0.3)
+                if (Vector3.Distance(stones[count].transform.position, transform.position) > 0.45f)
                 {
-                    stones[count].transform.position = Vector3.MoveTowards(stones[count].transform.position, this.transform.position, Time.deltaTime * (stoneHandDistance/inhaleTime));
+                    stones[count].transform.position = Vector3.MoveTowards(stones[count].transform.position, transform.position + transform.forward * 0.4f - transform.up*0.1f, Time.deltaTime * (stoneHandDistance/inhaleTime));
                 }
 
 
@@ -115,7 +116,7 @@ public class mechanics : MonoBehaviour
         // called if player stops inhaling before stone reaches the player
 
         //else if (move && flag!=1 && Vector3.Distance(stones[count].transform.position, transform.position) > 0.2f)
-        else if(canMove && !Input.GetKey(KeyCode.Space) && Vector3.Distance(stones[count].transform.position, transform.position) > 0.3f)
+        else if(canMove && !Input.GetKey(KeyCode.Space) && Vector3.Distance(stones[count].transform.position, transform.position) > 0.45f)
         {
             stones[count].GetComponent<Rigidbody>().useGravity = true;
             count++;
@@ -125,8 +126,16 @@ public class mechanics : MonoBehaviour
         }
 
 
+        // for the stone to always be in front of the camera
+        if (Vector3.Distance(stones[count].transform.position, this.transform.position) <= 0.45f)
+        {
+            stones[count].transform.position = transform.position + transform.forward * 0.4f- transform.up * 0.1f;
+            //stones[count].transform.rotation = new Quaternion(0.0f, transform.rotation.y, 0.0f, transform.rotation.w);
+        }
+
+
         // When stone has arrived
-        if ((Input.GetKey(KeyCode.D) || OVRInput.Get(OVRInput.RawButton.A) || flag==3)  && Vector3.Distance(stones[count].transform.position, this.transform.position)<=0.3f && fruitCount<fru.Count && s.stay)
+        if ((Input.GetKey(KeyCode.D) || OVRInput.Get(OVRInput.RawButton.A) || flag==3)  && Vector3.Distance(stones[count].transform.position, this.transform.position)<=0.45f && fruitCount<fru.Count && s.stay)
         {
             vfx[count].transform.GetChild(0).gameObject.SetActive(true);
 
