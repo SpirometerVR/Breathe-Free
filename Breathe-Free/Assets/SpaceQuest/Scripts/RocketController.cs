@@ -53,11 +53,11 @@ public class RocketController : MonoBehaviour
     private float exhaleThresh = 1500f;
     private float inhaleTresh = 1180f;
     private float steadyThresh = 1340f;
-    private float speedMultiplier = 2f;
-    //private float speedForceMultiplier = 4f;
-    // private float speedMultiplier = 200;
+    //private float speedMultiplier = 2f;
+	//private float speedForceMultiplier = 4f;
+	private float speedMultiplier = 200;
 
-    public AudioSource audio;
+	public AudioSource audio;
     public Renderer gameRocket;
 
     // Create GameObject to find OSC
@@ -109,6 +109,7 @@ public class RocketController : MonoBehaviour
             Destroy(GameObject.FindGameObjectWithTag("Right Fuel"));
             Destroy(GameObject.FindGameObjectWithTag("Left Fuel"));
             Destroy(GameObject.FindGameObjectWithTag("Middle Fuel"));
+            Destroy(GameObject.FindGameObjectWithTag("Fuel"));
         }
         // Otherwise, if the game is not over:
         if (!gameOver)
