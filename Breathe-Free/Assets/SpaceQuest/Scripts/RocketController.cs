@@ -147,12 +147,12 @@ public class RocketController : MonoBehaviour
                     breakStart = Time.time;
 				}
 
-                //TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF STATEMENT BELOW:
-                //if (!Input.GetKey(KeyCode.UpArrow))
-                //{
-                //    exhaleIsOn = false;
-                //}
-            }
+				//TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF STATEMENT BELOW:
+				if (!Input.GetKey(KeyCode.UpArrow))
+				{
+					exhaleIsOn = false;
+				}
+			}
 
             if(exhaleDuration > tempInhale)
             {
@@ -190,12 +190,12 @@ public class RocketController : MonoBehaviour
                     tempInhale = inhaleDuration;
                 }
 
-                //TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF LOOP BELOW:
-                //if (!Input.GetKey(KeyCode.Space))
-                //{
-                //    inhaleIsOn = false;
-                //}
-            }
+				//TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF LOOP BELOW:
+				if (!Input.GetKey(KeyCode.Space))
+				{
+					inhaleIsOn = false;
+				}
+			}
 
             // If the player is neither exhaling nor inhaling:
             if (!exhaleIsOn && !inhaleIsOn)

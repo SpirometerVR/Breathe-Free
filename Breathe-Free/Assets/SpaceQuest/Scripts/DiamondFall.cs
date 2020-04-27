@@ -45,7 +45,7 @@ public class DiamondFall : MonoBehaviour
                     diamondScores.diamondScore -= 1;
                     timer = 1.5f;
                 }
-                else if (transform.position.y > player.transform.position.y && transform.position.y < 3f)
+                else if (transform.position.y > player.transform.position.y && transform.position.y < 3.5f)
                 {
                     explode.Play();
                 }

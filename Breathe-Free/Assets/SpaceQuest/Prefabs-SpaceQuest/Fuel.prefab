@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2024086452620083419}
   - component: {fileID: 2024086452620083417}
   - component: {fileID: 2024086452620083418}
+  - component: {fileID: 6891350178559571845}
   m_Layer: 0
   m_Name: Particle System (3)
   m_TagString: Untagged
@@ -4664,6 +4665,25 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!95 &6891350178559571845
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2024086452620083412}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0a145f02c736c4c899740c6aee9a538f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2024086452996298075
 GameObject:
   m_ObjectHideFlags: 0
@@ -4676,6 +4696,7 @@ GameObject:
   - component: {fileID: 2024086452996298079}
   - component: {fileID: 2024086452996298072}
   - component: {fileID: 2024086452996298073}
+  - component: {fileID: 848655555920440023}
   m_Layer: 0
   m_Name: Particle System (3)
   m_TagString: Untagged
@@ -9341,6 +9362,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5c517b31947a4b1c8872367b7e7cded, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &848655555920440023
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2024086452996298075}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0a145f02c736c4c899740c6aee9a538f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2024086453289699234
 GameObject:
   m_ObjectHideFlags: 0
@@ -23980,6 +24020,7 @@ GameObject:
   - component: {fileID: 2024086453967964659}
   - component: {fileID: 2024086453967964657}
   - component: {fileID: 2024086453967964658}
+  - component: {fileID: 3339735125721085575}
   m_Layer: 0
   m_Name: Particle System (3)
   m_TagString: Untagged
@@ -28633,6 +28674,25 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!95 &3339735125721085575
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2024086453967964620}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0a145f02c736c4c899740c6aee9a538f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6374645832268849377
 GameObject:
   m_ObjectHideFlags: 0
