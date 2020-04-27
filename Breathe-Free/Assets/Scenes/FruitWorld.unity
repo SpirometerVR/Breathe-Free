@@ -647,8 +647,6 @@ Transform:
   - {fileID: 1283576672}
   - {fileID: 84486217}
   - {fileID: 1974064787}
-  - {fileID: 1020812116}
-  - {fileID: 1339538228}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1115,7 +1113,7 @@ PrefabInstance:
     - target: {fileID: 2745967891070767081, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
         type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2745967891070767081, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
         type: 3}
@@ -1137,6 +1135,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: FruitWorld
       objectReference: {fileID: 0}
+    - target: {fileID: 2745967891070767082, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891648329587, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: CanvasText
+      value: 
+      objectReference: {fileID: 1688471422}
     - target: {fileID: 2745967891655007827, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -1155,12 +1163,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7889848158734230093, guid: a879e80f5b18d1b44b116773211863ff,
     type: 3}
   m_PrefabInstance: {fileID: 7889848158502293426}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &1020812116 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 279868698354313942, guid: 75e9c36195281ef438798f47bba5a823,
-    type: 3}
-  m_PrefabInstance: {fileID: 279868697698913618}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1023765824 stripped
 GameObject:
@@ -1383,8 +1385,8 @@ RectTransform:
   m_LocalScale: {x: 0.02, y: 0.02, z: 0.02}
   m_Children:
   - {fileID: 1688471423}
-  m_Father: {fileID: 108000830}
-  m_RootOrder: 7
+  m_Father: {fileID: 1576294135}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1468,6 +1470,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3376126879977367714, guid: 25c54fa042e47b149848c1f219c322e8,
     type: 3}
   m_PrefabInstance: {fileID: 3376126881465904578}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1576294135 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2745967891070767081, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+    type: 3}
+  m_PrefabInstance: {fileID: 782337129}
   m_PrefabAsset: {fileID: 0}
 --- !u!198 &1583027601 stripped
 ParticleSystem:
@@ -1784,7 +1792,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 108000830}
+    m_TransformParent: {fileID: 1576294135}
     m_Modifications:
     - target: {fileID: 279868698354313938, guid: 75e9c36195281ef438798f47bba5a823,
         type: 3}
@@ -1829,7 +1837,7 @@ PrefabInstance:
     - target: {fileID: 279868698354313942, guid: 75e9c36195281ef438798f47bba5a823,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 279868698354313942, guid: 75e9c36195281ef438798f47bba5a823,
         type: 3}
