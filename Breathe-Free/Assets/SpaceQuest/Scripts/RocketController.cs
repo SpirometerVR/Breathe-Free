@@ -14,7 +14,7 @@ public class RocketController : MonoBehaviour
     public GameObject miniDiamondTwo;
     public GameObject engineLight;
 
-    public bool inBounds;
+    public bool inBounds = true;
 
     // Public target times can be adjusted by doctor/patient.
     public float exhaleTargetTime = 1f;

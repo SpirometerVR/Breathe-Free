@@ -7,6 +7,7 @@ public class DiamondFall : MonoBehaviour
     private GameObject player;
     private GameObject scoreBoard;
     private RocketController playerScript;
+    public ParticleSystem explode;
     private float speed = 25f;
     private float timer = 1.5f;
     private Vector3 offset = new Vector3(0, -3, 0);
@@ -43,6 +44,10 @@ public class DiamondFall : MonoBehaviour
                     Destroy(gameObject);
                     diamondScores.diamondScore -= 1;
                     timer = 1.5f;
+                }
+                else if (transform.position.y > player.transform.position.y && transform.position.y < 3f)
+                {
+                    explode.Play();
                 }
             }
             // Otherwise maintain it at the position it currently is at and reduce timer.

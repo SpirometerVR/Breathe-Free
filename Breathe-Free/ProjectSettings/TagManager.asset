@@ -32,6 +32,7 @@ TagManager:
   - Asteroid
   - Fuel Bar
   - Engine Light
+  - Diamond Explode
   layers:
   - Default
   - TransparentFX
