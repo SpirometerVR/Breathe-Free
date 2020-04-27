@@ -42,6 +42,7 @@ public class RocketController : MonoBehaviour
 	private float exhaleStart = 0f;
     private float inhaleStart = 0f;
 	private float breakStart = 0f;
+    private float tempInhale = 0f;
 
 	public bool exhaleIsOn = false;
     public bool inhaleIsOn = false;
@@ -51,7 +52,8 @@ public class RocketController : MonoBehaviour
     private float exhaleThresh = 1500f;
     private float inhaleTresh = 1180f;
     private float steadyThresh = 1340f;
-    private float speedMultiplier = 4f;
+    //private float speedForceMultiplier = 4f;
+    private float speedMultiplier = 200;
 
     public AudioSource audio;
     public Renderer gameRocket;
@@ -131,22 +133,25 @@ public class RocketController : MonoBehaviour
                     // reset inhaleDuration timer.
                     inhaleDuration = 0;
 					breakDuration = 0;
-					// Start timer to determine how long the breath is exhaled.
-					downTime = Time.time;
-                    // Use transform.translate so that space ship does not stop on collisions.
-                    transform.Translate(new Vector3(cameraVector.x, 0, cameraVector.z) * 300 * Time.deltaTime);
-                    //rocketBody.AddRelativeForce(new Vector3(cameraVector.x, 0, cameraVector.z) * speedMultiplier, ForceMode.VelocityChange);
-                    // Determine how long the exhale is or how long upArrow is being held down for.
-                    exhaleDuration = downTime - exhaleStart;
-					// Start counting the break time
-					breakStart = Time.time;
+                    // Only allow exhale for as long as previous cycle was inhaled.
+                    if (exhaleDuration <= tempInhale)
+                    {
+                        // Start timer to determine how long the breath is exhaled.
+                        downTime = Time.time;
+                        // Use transform.translate so that space ship does not stop on collisions.
+                        transform.Translate(new Vector3(cameraVector.x, 0, cameraVector.z) * speedMultiplier * Time.deltaTime);
+                        // Determine how long the exhale is or how long upArrow is being held down for.
+                        exhaleDuration = downTime - exhaleStart;
+                        // Start counting the break time
+                        breakStart = Time.time;
+                    }
 				}
 
                 //TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF STATEMENT BELOW:
-                //if (!Input.GetKey(KeyCode.UpArrow))
-                //{
-                //	exhaleIsOn = false;
-                //}
+                if (!Input.GetKey(KeyCode.UpArrow))
+                {
+                    exhaleIsOn = false;
+                }
             }
 
             if (inhalePhase && cameraBounds())
@@ -168,14 +173,16 @@ public class RocketController : MonoBehaviour
                     inhaleDuration = upTime - inhaleStart;
 					// Start counting the break time
 					breakStart = Time.time;
+                    // Set tempInhale to be the time inhaled.
+                    tempInhale = inhaleDuration;
                 }
 
-				//TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF LOOP BELOW:
-				//if (!Input.GetKey(KeyCode.Space))
-				//{
-				//	inhaleIsOn = false;
-				//}
-			}
+                //TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF LOOP BELOW:
+                if (!Input.GetKey(KeyCode.Space))
+                {
+                    inhaleIsOn = false;
+                }
+            }
 
             // If the player is neither exhaling nor inhaling:
             if (!exhaleIsOn && !inhaleIsOn)
@@ -198,7 +205,7 @@ public class RocketController : MonoBehaviour
                     // Let the spaceship float for a duration of time. Do not do this on start cycle.
                     if (breakDuration <= 0.3f && exhaleDuration > 0)
                     {
-                        rocketBody.AddRelativeForce(new Vector3(cameraVector.x, 0, cameraVector.z) * 4f, ForceMode.VelocityChange);
+                        rocketBody.AddRelativeForce(new Vector3(cameraVector.x, 0, cameraVector.z) * 4.5f, ForceMode.VelocityChange);
                     }
                     // Negate the force added to the rocket via exhalation.
                     else
@@ -206,7 +213,6 @@ public class RocketController : MonoBehaviour
                         var oppositeDirX = -rocketBody.velocity;
                         rocketBody.AddForce(oppositeDirX);
                     }
-
                     // Only count exhale and inhales that are longer than 0.3 second to remove erroneous air flow data.
                     // Once inhale or exhale is conducted and completed, switch cycles.
                     if (inhalePhase && inhaleDuration >= 0.3)
@@ -300,35 +306,29 @@ public class RocketController : MonoBehaviour
         // If it collides with a diamond.
         if (other.gameObject.CompareTag("Diamond") || other.gameObject.CompareTag("Diamond Two"))
         {
-            if (exhalePhase)
-            {
-                // Add constraints so that ship does not float randomly on collision
-                rocketBody.constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionX;
-				rocketBody.isKinematic = true;
-				transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
+            // Add constraints so that ship does not float randomly on collision
+            rocketBody.constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionX;
+			rocketBody.isKinematic = true;
+			transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
 
-                //Destroy(other.gameObject.);
-                Destroy(other.gameObject);
-                audio.PlayOneShot(diamond, 5f);
+            //Destroy(other.gameObject.);
+            Destroy(other.gameObject);
+            audio.PlayOneShot(diamond, 5f);
 
-                // Create mini diamonds for score UI. See DiamondController for controller script.
-                Instantiate(miniDiamond, new Vector3(transform.position.x, transform.position.y + 10, transform.position.z), Quaternion.Euler(90, 180, 0));
+            // Create mini diamonds for score UI. See DiamondController for controller script.
+            Instantiate(miniDiamond, new Vector3(transform.position.x, transform.position.y + 10, transform.position.z), Quaternion.Euler(90, 180, 0));
 
-                // Update all instances of diamondScore so there is data consistency
-                finalScores.diamondScore += 1;
-                spedometer.diamondScore += 1;
-            }
+            // Update all instances of diamondScore so there is data consistency
+            finalScores.diamondScore += 1;
+            spedometer.diamondScore += 1;
         }
         // If it collides with fuel.
         else if (other.gameObject.CompareTag("Fuel"))
         {
-            if (inhalePhase)
-            {
-                // Add constraints so that ship does not float randomly on collision
-                rocketBody.constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionX;
-				rocketBody.isKinematic = true;
-				transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
-            }
+            // Add constraints so that ship does not float randomly on collision
+            rocketBody.constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionX;
+			rocketBody.isKinematic = true;
+			transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
         }
         // Destroy rigidBody within Diamonds so as not to cause physics issues.
         else if (other.gameObject.CompareTag("Asteroid Destroyer"))

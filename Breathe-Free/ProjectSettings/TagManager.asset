@@ -30,6 +30,7 @@ TagManager:
   - Middle Fuel
   - Asteroid Destroyer
   - Asteroid
+  - Fuel Bar
   layers:
   - Default
   - TransparentFX
