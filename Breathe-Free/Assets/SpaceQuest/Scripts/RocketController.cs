@@ -12,6 +12,7 @@ public class RocketController : MonoBehaviour
 
     public GameObject miniDiamond;
     public GameObject miniDiamondTwo;
+    public GameObject engineLight;
 
     public bool inBounds;
 
@@ -28,7 +29,7 @@ public class RocketController : MonoBehaviour
     public bool gameOver = false;
 
     // Debugging the spirometer
-    public float speed;
+    //public float speed;
 
     // Music that will be played when items are collected.
     public AudioClip diamond;
@@ -44,7 +45,7 @@ public class RocketController : MonoBehaviour
 	private float breakStart = 0f;
     private float tempInhale = 0f;
 
-	public bool exhaleIsOn = false;
+    public bool exhaleIsOn = false;
     public bool inhaleIsOn = false;
     public bool breakIsOn = false;
 
@@ -67,7 +68,7 @@ public class RocketController : MonoBehaviour
 
     public ScoreBoard diamondScores;
     public ScoreBoard finalScores;
-    public ScoreBoard spedometer;
+    //public ScoreBoard spedometer;
 
     // Start is called before the first frame update
     void Start()
@@ -88,10 +89,10 @@ public class RocketController : MonoBehaviour
         // Find the score board objects for each respective scoreboard.
         diamondScores = GameObject.FindGameObjectWithTag("Diamond Score").GetComponent<ScoreBoard>();
         finalScores = GameObject.FindGameObjectWithTag("Final Score").GetComponent<ScoreBoard>();
-		spedometer = GameObject.FindGameObjectWithTag("Spedometer").GetComponent<ScoreBoard>();
-
-		// Manually set inhale phase to true at start of game.
-		inhalePhase = true;
+		//spedometer = GameObject.FindGameObjectWithTag("Spedometer").GetComponent<ScoreBoard>();
+ 
+        // Manually set inhale phase to true at start of game.
+        inhalePhase = true;
     }
 
     // Update is called once per frame.     
@@ -145,10 +146,10 @@ public class RocketController : MonoBehaviour
 				}
 
                 //TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF STATEMENT BELOW:
-                if (!Input.GetKey(KeyCode.UpArrow))
-                {
-                    exhaleIsOn = false;
-                }
+                //if (!Input.GetKey(KeyCode.UpArrow))
+                //{
+                //    exhaleIsOn = false;
+                //}
             }
 
             if(exhaleDuration > tempInhale)
@@ -188,10 +189,10 @@ public class RocketController : MonoBehaviour
                 }
 
                 //TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF LOOP BELOW:
-                if (!Input.GetKey(KeyCode.Space))
-                {
-                    inhaleIsOn = false;
-                }
+                //if (!Input.GetKey(KeyCode.Space))
+                //{
+                //    inhaleIsOn = false;
+                //}
             }
 
             // If the player is neither exhaling nor inhaling:
@@ -284,8 +285,23 @@ public class RocketController : MonoBehaviour
     private void ReceiveSpirometerData(OscMessage message)
     {
         float breathVal = message.GetFloat(0);
-		// Debugging purposes.
-		speed = breathVal;
+        // Debugging purposes.
+        //speed = breathVal;
+        Debug.Log(breathVal);
+        // Turn on engine light if the spirometer is connected.
+        if(breathVal > 0)
+        {
+            MeshRenderer engineRenderer = engineLight.GetComponent<MeshRenderer>();
+            Material newColor = (Material)Resources.Load("Materials-SQ/Green - SQ", typeof(Material));
+            engineRenderer.material = newColor;
+        }
+        // Turn engine light off if spirometer is not connected.
+        else
+        {
+            MeshRenderer engineRenderer = engineLight.GetComponent<MeshRenderer>();
+            Material newColor = (Material)Resources.Load("Materials-SQ/Red - SQ", typeof(Material));
+            engineRenderer.material = newColor;
+        }
 		Debug.Log(breathVal);
 
         if (breathVal >= exhaleThresh)
@@ -330,7 +346,7 @@ public class RocketController : MonoBehaviour
 
             // Update all instances of diamondScore so there is data consistency
             finalScores.diamondScore += 1;
-            spedometer.diamondScore += 1;
+            //spedometer.diamondScore += 1;
         }
         // If it collides with fuel.
         else if (other.gameObject.CompareTag("Fuel"))
@@ -344,6 +360,10 @@ public class RocketController : MonoBehaviour
         else if (other.gameObject.CompareTag("Asteroid Destroyer"))
         {
             Destroy(other.gameObject);
+        }
+        else if (other.gameObject.CompareTag("Engine Light"))
+        {
+            // Do  nothing on collision with Engine Light.
         }
         // If it collides with any other object.
         else
@@ -371,15 +391,18 @@ public class RocketController : MonoBehaviour
     private IEnumerator BlinkTime(float blinkDuration)
     {
         float timeCounter = 0;
+        MeshRenderer engineRenderer = engineLight.GetComponent<MeshRenderer>();
         while (timeCounter < blinkDuration)
         {
             // make the rocket blink off and on.
             gameRocket.enabled = !gameRocket.enabled;
+            engineRenderer.enabled = !engineRenderer.enabled;
             //wait 0.3 seconds per interval
             yield return new WaitForSeconds(0.3f);
             timeCounter += (1f / 3f);
         }
         gameRocket.enabled = true;
+        engineRenderer.enabled = true;
     }
 
 	// Only allow player to play when looking in the forward direction.
