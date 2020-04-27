@@ -121,7 +121,8 @@ public class RocketController : MonoBehaviour
             Vector3 cameraVector = new Vector3(Camera.main.transform.forward.x, 0, Camera.main.transform.forward.z);
 
             // Accelerate rocket when player is exhaling or using upArrow input.
-            if (exhalePhase && cameraBounds())
+            // Only allow exhale for as long as previous cycle was inhaled.
+            if (exhalePhase && cameraBounds() && exhaleDuration <= tempInhale)
             {
                 if (exhaleIsOn || Input.GetKey(KeyCode.UpArrow))
                 {
@@ -133,18 +134,14 @@ public class RocketController : MonoBehaviour
                     // reset inhaleDuration timer.
                     inhaleDuration = 0;
 					breakDuration = 0;
-                    // Only allow exhale for as long as previous cycle was inhaled.
-                    if (exhaleDuration <= tempInhale)
-                    {
-                        // Start timer to determine how long the breath is exhaled.
-                        downTime = Time.time;
-                        // Use transform.translate so that space ship does not stop on collisions.
-                        transform.Translate(new Vector3(cameraVector.x, 0, cameraVector.z) * speedMultiplier * Time.deltaTime);
-                        // Determine how long the exhale is or how long upArrow is being held down for.
-                        exhaleDuration = downTime - exhaleStart;
-                        // Start counting the break time
-                        breakStart = Time.time;
-                    }
+                    // Start timer to determine how long the breath is exhaled.
+                    downTime = Time.time;
+                    // Use transform.translate so that space ship does not stop on collisions.
+                    transform.Translate(new Vector3(cameraVector.x, 0, cameraVector.z) * speedMultiplier * Time.deltaTime);
+                    // Determine how long the exhale is or how long upArrow is being held down for.
+                    exhaleDuration = downTime - exhaleStart;
+                    // Start counting the break time
+                    breakStart = Time.time;
 				}
 
                 //TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF STATEMENT BELOW:
@@ -152,6 +149,19 @@ public class RocketController : MonoBehaviour
                 {
                     exhaleIsOn = false;
                 }
+            }
+
+            if(exhaleDuration > tempInhale)
+            {
+                // Reset all of the flags.
+                exhalePhase = false;
+                inhalePhase = true;
+                exhaleDuration = 0;
+                inhaleDuration = 0;
+                breakDuration = 0;
+                exhaleIsOn = false;
+                inhaleIsOn = false;
+                breakIsOn = true;
             }
 
             if (inhalePhase && cameraBounds())
