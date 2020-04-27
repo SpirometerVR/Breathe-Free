@@ -16,6 +16,8 @@ public class FuelController : MonoBehaviour
     private GameObject middleFuel;
     private GameObject leftFuel;
 
+    private AudioClip fuelSound;
+
     private float numFuels = 3;
 
     // Start is called before the first frame update
@@ -34,6 +36,9 @@ public class FuelController : MonoBehaviour
         rightFuel = GameObject.FindGameObjectWithTag("Right Fuel");
         middleFuel = GameObject.FindGameObjectWithTag("Middle Fuel");
         leftFuel = GameObject.FindGameObjectWithTag("Left Fuel");
+
+        // Find fuel sound.
+        fuelSound = playerScript.fuel;
     }
 
     // Update is called once per frame
