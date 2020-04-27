@@ -629,7 +629,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &108000830
 Transform:
   m_ObjectHideFlags: 0
@@ -1070,6 +1070,80 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 774134802}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &782337129
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2745967891070767081, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 14.492386
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891070767081, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -23.398594
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891070767081, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 77.0338
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891070767081, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891070767081, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891070767081, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891070767081, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891070767081, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891070767081, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891070767081, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891070767081, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891070767082, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_Name
+      value: FruitWorld
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891655007827, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5ab161743fd6b284e9e1d2e1c87fc705, type: 3}
 --- !u!1 &838296138 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7889848158761250296, guid: a879e80f5b18d1b44b116773211863ff,
