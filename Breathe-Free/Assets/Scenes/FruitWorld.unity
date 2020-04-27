@@ -647,8 +647,6 @@ Transform:
   - {fileID: 1283576672}
   - {fileID: 84486217}
   - {fileID: 1974064787}
-  - {fileID: 1020812116}
-  - {fileID: 1339538228}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1115,7 +1113,7 @@ PrefabInstance:
     - target: {fileID: 2745967891070767081, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
         type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2745967891070767081, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
         type: 3}
@@ -1137,9 +1135,89 @@ PrefabInstance:
       propertyPath: m_Name
       value: FruitWorld
       objectReference: {fileID: 0}
+    - target: {fileID: 2745967891215437519, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891215677934, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891412000628, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891475405364, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891484832221, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891493219725, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891553608378, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891599846576, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891648329587, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: CanvasText
+      value: 
+      objectReference: {fileID: 1688471422}
     - target: {fileID: 2745967891655007827, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
         type: 3}
       propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891774742309, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891936674591, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967891954029713, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967892231980210, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967892270837581, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967892371255805, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745967892803825299, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+        type: 3}
+      propertyPath: m_Constraints
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1155,12 +1233,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7889848158734230093, guid: a879e80f5b18d1b44b116773211863ff,
     type: 3}
   m_PrefabInstance: {fileID: 7889848158502293426}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &1020812116 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 279868698354313942, guid: 75e9c36195281ef438798f47bba5a823,
-    type: 3}
-  m_PrefabInstance: {fileID: 279868697698913618}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1023765824 stripped
 GameObject:
@@ -1383,12 +1455,12 @@ RectTransform:
   m_LocalScale: {x: 0.02, y: 0.02, z: 0.02}
   m_Children:
   - {fileID: 1688471423}
-  m_Father: {fileID: 108000830}
-  m_RootOrder: 7
+  m_Father: {fileID: 1409181417}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -9.154001, y: 26.414}
+  m_AnchoredPosition: {x: -8.06, y: 27.41}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1339538229
@@ -1456,6 +1528,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7889848159272606395, guid: a879e80f5b18d1b44b116773211863ff,
     type: 3}
   m_PrefabInstance: {fileID: 7889848158502293426}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1409181417 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2745967891070767081, guid: 5ab161743fd6b284e9e1d2e1c87fc705,
+    type: 3}
+  m_PrefabInstance: {fileID: 782337129}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1424197668 stripped
 GameObject:
@@ -1784,7 +1862,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 108000830}
+    m_TransformParent: {fileID: 1409181417}
     m_Modifications:
     - target: {fileID: 279868698354313938, guid: 75e9c36195281ef438798f47bba5a823,
         type: 3}
@@ -1829,7 +1907,7 @@ PrefabInstance:
     - target: {fileID: 279868698354313942, guid: 75e9c36195281ef438798f47bba5a823,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 279868698354313942, guid: 75e9c36195281ef438798f47bba5a823,
         type: 3}
