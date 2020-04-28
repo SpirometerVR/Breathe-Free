@@ -148,10 +148,10 @@ public class RocketController : MonoBehaviour
 				}
 
 				//TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF STATEMENT BELOW:
-				if (!Input.GetKey(KeyCode.UpArrow))
-				{
-					exhaleIsOn = false;
-				}
+				//if (!Input.GetKey(KeyCode.UpArrow))
+				//{
+				//	exhaleIsOn = false;
+				//}
 			}
 
             if(exhaleDuration > tempInhale)
@@ -191,10 +191,10 @@ public class RocketController : MonoBehaviour
                 }
 
 				//TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF LOOP BELOW:
-				if (!Input.GetKey(KeyCode.Space))
-				{
-					inhaleIsOn = false;
-				}
+				//if (!Input.GetKey(KeyCode.Space))
+				//{
+				//	inhaleIsOn = false;
+				//}
 			}
 
             // If the player is neither exhaling nor inhaling:

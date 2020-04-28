@@ -521,7 +521,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inPort: 8000
-  outIP: 192.168.1.193
+  outIP: 192.168.1.188
   outPort: 8000
 --- !u!4 &317082002
 Transform:
@@ -10298,7 +10298,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9b3bd6345a93345a49dec8fca7f88708, type: 2}
+  - {fileID: 2100000, guid: 321f7553283044d54b68586a955c22a3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
