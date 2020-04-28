@@ -150,7 +150,7 @@ public class RocketController : MonoBehaviour
             if (sqLeaderBoard.publicCode == "") Debug.LogError("You forgot to set the publicCode variable");
             if (sqLeaderBoard.privateCode == "") Debug.LogError("You forgot to set the privateCode variable");
 
-            sqLeaderBoard.AddScore("Lance", (int)(100 * diamondScores.diamondScore / diamondScores.totalDiamonds));
+            sqLeaderBoard.AddScore("Trojan", (int)(100 * diamondScores.diamondScore / diamondScores.totalDiamonds));
             Debug.Log("...Add Score");
 
             Destroy(GameObject.FindGameObjectWithTag("Right Fuel"));
@@ -221,10 +221,10 @@ public class RocketController : MonoBehaviour
 				}
 
                 //TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF STATEMENT BELOW:
-                if (!Input.GetKey(KeyCode.UpArrow))
-                {
-                    exhaleIsOn = false;
-                }
+                //if (!Input.GetKey(KeyCode.UpArrow))
+                //{
+                //    exhaleIsOn = false;
+                //}
             }
 
             if(exhaleDuration > tempInhale)
@@ -264,10 +264,10 @@ public class RocketController : MonoBehaviour
                 }
 
                 //TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF LOOP BELOW:
-                if (!Input.GetKey(KeyCode.Space))
-                {
-                    inhaleIsOn = false;
-                }
+                //if (!Input.GetKey(KeyCode.Space))
+                //{
+                //    inhaleIsOn = false;
+                //}
             }
 
             // If the player is neither exhaling nor inhaling:

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.23231122, g: 0.23549819, b: 0.27225515, a: 1}
+  m_IndirectSpecularColor: {r: 0.23190945, g: 0.23507786, b: 0.27232572, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -17299,6 +17299,11 @@ PrefabInstance:
         type: 3}
       propertyPath: cycles
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4596029872646980628, guid: 4c8596437b30446d7adc86bbe78e6123,
+        type: 3}
+      propertyPath: playerName
+      value: Tommy Trojan
       objectReference: {fileID: 0}
     - target: {fileID: 4596029872646980629, guid: 4c8596437b30446d7adc86bbe78e6123,
         type: 3}
