@@ -35,6 +35,7 @@ public class mechanics : MonoBehaviour
     [SerializeField] private GameObject CanvasText;
     [SerializeField] private List<GameObject> vfx;  // array of particle system attached to stone
     [SerializeField] private GameObject sel;
+    [SerializeField] private GameObject myCamera;
 
     Coroutine coroutineInhale, coroutineExhale;
 
@@ -49,8 +50,8 @@ public class mechanics : MonoBehaviour
         oscScript.SetAddressHandler("/Spirometer/C", BreathData);
         s = sel.GetComponent<select>();
 
-        //inhaleTime = 3;
-        //exhaleTime = 3;
+        inhaleTime = 3;
+        exhaleTime = 3;
 
         stoneHandUpdate = true;
         stoneFruitUpdate = true;
