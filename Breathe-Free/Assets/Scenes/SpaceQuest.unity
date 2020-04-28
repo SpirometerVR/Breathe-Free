@@ -521,7 +521,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inPort: 8000
-  outIP: 192.168.1.188
+  outIP: 192.168.1.193
   outPort: 8000
 --- !u!4 &317082002
 Transform:
