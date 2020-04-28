@@ -53,7 +53,7 @@ public class RocketController : MonoBehaviour
 
     // Target threshold values for inhale and exhale.
     private float exhaleThresh = 1500f;
-    private float inhaleTresh = 1180f;
+    private float inhaleTresh = 1170f;
     private float steadyThresh = 1340f;
     //private float speedMultiplier = 2f;
 	//private float speedForceMultiplier = 4f;
@@ -150,7 +150,7 @@ public class RocketController : MonoBehaviour
             if (sqLeaderBoard.publicCode == "") Debug.LogError("You forgot to set the publicCode variable");
             if (sqLeaderBoard.privateCode == "") Debug.LogError("You forgot to set the privateCode variable");
 
-            sqLeaderBoard.AddScore("Trojan", (int)(100 * diamondScores.diamondScore / diamondScores.totalDiamonds));
+            sqLeaderBoard.AddScore("Trojan_Test", (int)(100 * diamondScores.diamondScore / diamondScores.totalDiamonds));
             Debug.Log("...Add Score");
 
             Destroy(GameObject.FindGameObjectWithTag("Right Fuel"));
