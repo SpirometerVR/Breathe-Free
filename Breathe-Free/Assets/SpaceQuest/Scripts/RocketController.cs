@@ -72,7 +72,10 @@ public class RocketController : MonoBehaviour
     public ScoreBoard diamondScores;
     public ScoreBoard finalScores;
     //public ScoreBoard spedometer;
+
     public GameObject leaderBoard;
+
+    public BreathObjectGenerator breathGen;
 
     // Reference to the dreamloLeaderboard prefab in the scene
     dreamloLeaderBoard sqLeaderBoard;
@@ -153,6 +156,8 @@ public class RocketController : MonoBehaviour
             sqLeaderBoard.AddScore("Trojan_Test", (int)(100 * diamondScores.diamondScore / diamondScores.totalDiamonds));
             Debug.Log("...Add Score");
 
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, Camera.main.transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+
             Destroy(GameObject.FindGameObjectWithTag("Right Fuel"));
             Destroy(GameObject.FindGameObjectWithTag("Left Fuel"));
             Destroy(GameObject.FindGameObjectWithTag("Middle Fuel"));
@@ -196,9 +201,9 @@ public class RocketController : MonoBehaviour
 			transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, Camera.main.transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
             Vector3 cameraVector = new Vector3(Camera.main.transform.forward.x, 0, Camera.main.transform.forward.z);
 
-            // Accelerate rocket when player is exhaling or using upArrow input.
-            // Only allow exhale for as long as previous cycle was inhaled.
-            if (exhalePhase && cameraBounds() && exhaleDuration <= tempInhale)
+			// Accelerate rocket when player is exhaling or using upArrow input.
+			// Only allow exhale for as long as previous cycle was inhaled as soon as diamonds spawn.
+			if (exhalePhase && cameraBounds() && exhaleDuration <= tempInhale && breathGen.exhaleSpawned)
             {
                 if (exhaleIsOn || Input.GetKey(KeyCode.UpArrow))
                 {
@@ -220,12 +225,12 @@ public class RocketController : MonoBehaviour
                     breakStart = Time.time;
 				}
 
-                //TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF STATEMENT BELOW:
-                //if (!Input.GetKey(KeyCode.UpArrow))
-                //{
-                //    exhaleIsOn = false;
-                //}
-            }
+				//TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF STATEMENT BELOW:
+				//if (!Input.GetKey(KeyCode.UpArrow))
+				//{
+				//	exhaleIsOn = false;
+				//}
+			}
 
             if(exhaleDuration > tempInhale)
             {
@@ -240,7 +245,7 @@ public class RocketController : MonoBehaviour
                 breakIsOn = true;
             }
 
-            if (inhalePhase && cameraBounds())
+            if (inhalePhase && cameraBounds() && breathGen.inhaleSpawned)
             {
                 // Pull fuel towards the rocket when inhaling or using Space key.
                 if (inhaleIsOn ||  Input.GetKey(KeyCode.Space))
@@ -263,12 +268,12 @@ public class RocketController : MonoBehaviour
                     tempInhale = inhaleDuration;
                 }
 
-                //TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF LOOP BELOW:
-                //if (!Input.GetKey(KeyCode.Space))
-                //{
-                //    inhaleIsOn = false;
-                //}
-            }
+				//TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF LOOP BELOW:
+				//if (!Input.GetKey(KeyCode.Space))
+				//{
+				//	inhaleIsOn = false;
+				//}
+			}
 
             // If the player is neither exhaling nor inhaling:
             if (!exhaleIsOn && !inhaleIsOn)
