@@ -54,7 +54,7 @@ public class FuelController : MonoBehaviour
                 // Play fuel sound when it reaches the thruster.
                 if(playerScript.inhaleDuration == playerScript.inhaleTargetTime / numFuels)
 				{
-                    playerScript.audio.PlayOneShot(fuelSound, 0.25f);
+                    playerScript.audio.PlayOneShot(fuelSound, 0.5f);
                 }
             }
             // Move the left fuel towards the engine for the second portion of inhaling.
@@ -64,7 +64,7 @@ public class FuelController : MonoBehaviour
                 // Play fuel sound when it reaches the thruster.
                 if (playerScript.inhaleDuration == 2 * (playerScript.inhaleTargetTime / numFuels))
                 {
-                    playerScript.audio.PlayOneShot(fuelSound, 0.25f);
+                    playerScript.audio.PlayOneShot(fuelSound, 0.5f);
                 }
             }
             // Move the middle fuel towards the engine for the last portion of inhaling.
@@ -74,7 +74,7 @@ public class FuelController : MonoBehaviour
                 // Play fuel sound when it reaches the thruster.
                 if (playerScript.inhaleDuration == playerScript.inhaleTargetTime)
                 {
-                    playerScript.audio.PlayOneShot(fuelSound, 0.25f);
+                    playerScript.audio.PlayOneShot(fuelSound, 0.5f);
                 }
             } 
 		}
