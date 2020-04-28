@@ -33,6 +33,9 @@ TagManager:
   - Fuel Bar
   - Engine Light
   - Diamond Explode
+  - Leader Board
+  - Leader Names
+  - Leader Scores
   layers:
   - Default
   - TransparentFX

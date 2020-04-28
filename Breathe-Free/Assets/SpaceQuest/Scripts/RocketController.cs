@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RocketController : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class RocketController : MonoBehaviour
 	public float cycles = 5f;
     public float cycleCounter = 0f;
     public bool gameOver = false;
+    public bool submitNewScore = true;
 
     // Debugging the spirometer
     //public float speed;
@@ -70,6 +72,25 @@ public class RocketController : MonoBehaviour
     public ScoreBoard diamondScores;
     public ScoreBoard finalScores;
     //public ScoreBoard spedometer;
+    public GameObject leaderBoard;
+
+    // Reference to the dreamloLeaderboard prefab in the scene
+    dreamloLeaderBoard sqLeaderBoard;
+    private bool topScoresReceived = false;
+    private Text topNameList;
+    private Text topScoreList;
+    private Text topRankList;
+
+    enum gameState
+    {
+        waiting,
+        running,
+        enterscore,
+        leaderboard,
+        gameOver
+    };
+
+    gameState gState;
 
     // Start is called before the first frame update
     void Start()
@@ -90,29 +111,81 @@ public class RocketController : MonoBehaviour
         // Find the score board objects for each respective scoreboard.
         diamondScores = GameObject.FindGameObjectWithTag("Diamond Score").GetComponent<ScoreBoard>();
         finalScores = GameObject.FindGameObjectWithTag("Final Score").GetComponent<ScoreBoard>();
-		//spedometer = GameObject.FindGameObjectWithTag("Spedometer").GetComponent<ScoreBoard>();
- 
+        //spedometer = GameObject.FindGameObjectWithTag("Spedometer").GetComponent<ScoreBoard>();
+        topNameList = GameObject.Find("Top Names List").GetComponent<Text>();
+        topScoreList = GameObject.Find("Top Scores List").GetComponent<Text>();
+        topRankList = GameObject.Find("Top Ranks List").GetComponent<Text>();
+
         // Manually set inhale phase to true at start of game.
         inhalePhase = true;
+
+        // get the reference here...
+        this.sqLeaderBoard = dreamloLeaderBoard.GetSceneDreamloLeaderboard();
+        leaderBoard = GameObject.FindGameObjectWithTag("Leader Board");
+        leaderBoard.SetActive(false);
+
+        this.gState = gameState.running;
     }
 
     // Update is called once per frame.     
-    void Update() {}
+    void Update() {
+        if (cycleCounter > cycles && gState == gameState.running)
+        {
+            Debug.Log("...cycle counter");
+            this.gState = gameState.gameOver;
+        }
+    }
 
     // Place general movement in FixedUpdate to avoid shaking.
     private void FixedUpdate()
     {
         // Once the player has completed the number of cycles, set gameOver to true and destroy all existing gameObjects.
-        if (cycleCounter > cycles)
+        if (gState == gameState.gameOver)
         {
-            gameOver = true;
+            Debug.Log("...game over");
+
+            // display the leader board
+            leaderBoard.SetActive(true);
+
+            if (sqLeaderBoard.publicCode == "") Debug.LogError("You forgot to set the publicCode variable");
+            if (sqLeaderBoard.privateCode == "") Debug.LogError("You forgot to set the privateCode variable");
+
+            sqLeaderBoard.AddScore("Lance", (int)(100 * diamondScores.diamondScore / diamondScores.totalDiamonds));
+            Debug.Log("...Add Score");
+
             Destroy(GameObject.FindGameObjectWithTag("Right Fuel"));
             Destroy(GameObject.FindGameObjectWithTag("Left Fuel"));
             Destroy(GameObject.FindGameObjectWithTag("Middle Fuel"));
             Destroy(GameObject.FindGameObjectWithTag("Fuel"));
+
+            List<dreamloLeaderBoard.Score> scoreList = sqLeaderBoard.ToListHighToLow();
+
+            if (scoreList == null)
+            {
+                Debug.Log("(loading...)");
+            }
+            else
+            {
+                int maxToDisplay = 5;
+                int count = 0;
+                foreach (dreamloLeaderBoard.Score currentScore in scoreList)
+                {
+                    count++;
+                    
+                    //Debug.Log(currentScore.score.ToString());
+                    topRankList.text += count + "\n";
+                    topScoreList.text += currentScore.score.ToString() + "%\n";
+                    topNameList.text += currentScore.playerName.Replace("+", " ") + "\n";
+
+                    if (count >= maxToDisplay) break;
+                }
+
+                if (count > 0) { this.gState = gameState.waiting; }
+            }
         }
+
         // Otherwise, if the game is not over:
-        if (!gameOver)
+        if (gState == gameState.running)
         {
 			// Unfreeze restrictions so that ship moves normally when not in collision mode.
 			rocketBody.constraints = RigidbodyConstraints.None;
@@ -147,12 +220,12 @@ public class RocketController : MonoBehaviour
                     breakStart = Time.time;
 				}
 
-				//TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF STATEMENT BELOW:
-				//if (!Input.GetKey(KeyCode.UpArrow))
-				//{
-				//	exhaleIsOn = false;
-				//}
-			}
+                //TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF STATEMENT BELOW:
+                if (!Input.GetKey(KeyCode.UpArrow))
+                {
+                    exhaleIsOn = false;
+                }
+            }
 
             if(exhaleDuration > tempInhale)
             {
@@ -190,12 +263,12 @@ public class RocketController : MonoBehaviour
                     tempInhale = inhaleDuration;
                 }
 
-				//TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF LOOP BELOW:
-				//if (!Input.GetKey(KeyCode.Space))
-				//{
-				//	inhaleIsOn = false;
-				//}
-			}
+                //TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF LOOP BELOW:
+                if (!Input.GetKey(KeyCode.Space))
+                {
+                    inhaleIsOn = false;
+                }
+            }
 
             // If the player is neither exhaling nor inhaling:
             if (!exhaleIsOn && !inhaleIsOn)
