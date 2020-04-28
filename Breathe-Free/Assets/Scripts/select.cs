@@ -8,6 +8,7 @@ public class select : MonoBehaviour
     Camera cam;
     public bool stay = false;
     public GameObject go;
+    [SerializeField] private GameObject myCamera;
 
 
     void Start()
@@ -21,7 +22,7 @@ public class select : MonoBehaviour
 
     void Update()
     {
-
+        Debug.Log(Vector3.Distance(transform.forward, myCamera.transform.position));
     }
 
     private void OnTriggerEnter(Collider other)
