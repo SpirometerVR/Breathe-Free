@@ -136,6 +136,7 @@ public class RocketController : MonoBehaviour
         {
             Debug.Log("...cycle counter");
             this.gState = gameState.gameOver;
+            gameOver = true;
         }
     }
 
