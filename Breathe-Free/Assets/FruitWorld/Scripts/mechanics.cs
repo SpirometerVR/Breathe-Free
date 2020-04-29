@@ -46,6 +46,7 @@ public class mechanics : MonoBehaviour
     void Start()
     {
 
+
         oscGameObject = GameObject.Find("OSC");
         oscScript = oscGameObject.GetComponent<OSC>();
         oscScript.SetAddressHandler("/Spirometer/C", BreathData);
@@ -251,6 +252,9 @@ public class mechanics : MonoBehaviour
             }
             StartCoroutine(destory(vfx[count]));
             count++;
+            s.go.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+            s.go.GetComponent<Rigidbody>().isKinematic = false;
+            s.go.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
             s.go.GetComponent<Rigidbody>().useGravity = true;
             fruitCount++;
 

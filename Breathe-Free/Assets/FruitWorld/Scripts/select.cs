@@ -59,9 +59,9 @@ public class select : MonoBehaviour
         }
 
 
-        Debug.DrawLine(ray.origin, go.transform.position, Color.red, 2f);
-        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 10, Color.red);
-    }
+		Debug.DrawLine(ray.origin, go.transform.position, Color.red, 2f);
+		Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 10, Color.red);
+	}
 
     private void OnTriggerEnter(Collider other)
     {
