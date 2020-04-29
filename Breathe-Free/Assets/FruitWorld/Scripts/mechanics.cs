@@ -61,7 +61,7 @@ public class mechanics : MonoBehaviour
         stoneHandDistance = 0;
         stoneFruitDistance = 0;
 
-        CanvasText.GetComponent<Text>().text = inhaleTime.ToString();
+        CanvasText.GetComponent<Text>().text = "Inhale Target Time: " + inhaleTime.ToString();
 
 
 
@@ -121,7 +121,7 @@ public class mechanics : MonoBehaviour
 
 				if (stoneHandUpdate)
                 {
-                    CanvasText.GetComponent<Text>().text = inhaleTime.ToString();
+                    CanvasText.GetComponent<Text>().text = "Inhale Target Time: " + inhaleTime.ToString();
                     coroutineInhale = StartCoroutine(countDownInhale(inhaleTime));
 
                     stoneHandDistance = Vector3.Distance(stones[count].transform.position, transform.position);
@@ -197,7 +197,7 @@ public class mechanics : MonoBehaviour
             }
             if (stoneFruitUpdate)
             {
-                CanvasText.GetComponent<Text>().text = exhaleTime.ToString();
+                CanvasText.GetComponent<Text>().text = "Exhale Target Time: " + exhaleTime.ToString();
                 coroutineExhale = StartCoroutine(countDownExhale(exhaleTime));
 
                 stoneFruitDistance = Vector3.Distance(stones[count].transform.position, s.go.transform.position);
@@ -242,6 +242,7 @@ public class mechanics : MonoBehaviour
 
             stones[count].GetComponent<Rigidbody>().useGravity = true;
             playPluck = true;
+            CanvasText.GetComponent<Text>().text = "Inhale Target Time: " + inhaleTime.ToString();
             Destroy(stones[count]);
             //toDestory.Add(vfx[count]);
             for (int i = 0; i < 3; i++)
@@ -275,7 +276,7 @@ public class mechanics : MonoBehaviour
         {
             yield return new WaitForSeconds(1.0f);
             startVal--;
-            CanvasText.GetComponent<Text>().text = startVal.ToString();
+            CanvasText.GetComponent<Text>().text = "Inhale Target Time: " + startVal.ToString();
         }
 
     }
@@ -286,7 +287,7 @@ public class mechanics : MonoBehaviour
         {
             yield return new WaitForSeconds(1.0f);
             startVal--;
-            CanvasText.GetComponent<Text>().text = startVal.ToString();
+            CanvasText.GetComponent<Text>().text = "Exhale Target Time: " + startVal.ToString();
         }
 
     }
