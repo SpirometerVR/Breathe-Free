@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuButtonController : MonoBehaviour {
+public class MenuButtonController : MonoBehaviour
+{
 
 	// Use this for initialization
 	public int index;
@@ -10,13 +11,12 @@ public class MenuButtonController : MonoBehaviour {
 	[SerializeField] int maxIndex;
 	public AudioSource audioSource;
 
-	void Start () 
+	void Start()
 	{
 		audioSource = GetComponent<AudioSource>();
 	}
-	
+
 
 
 }
-
 

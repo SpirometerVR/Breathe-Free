@@ -14,7 +14,7 @@ public class assignMaterial : MonoBehaviour
         currentMat1 = m.fru[Random.Range(0, m.fru.Count)].GetComponent<MeshRenderer>().material;
         currentMat2 = m.fru[Random.Range(0, m.fru.Count)].GetComponent<MeshRenderer>().material;
         m = GameObject.Find("hand").GetComponent<mechanics>();
-        if(RenderSettings.skybox == sky_mat)
+        if (RenderSettings.skybox == sky_mat)
         {
             currentMat1 = changeMat;
             currentMat2 = changeMat;
@@ -24,6 +24,6 @@ public class assignMaterial : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+
     }
 }

@@ -37,10 +37,10 @@ public class testing : MonoBehaviour
 
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         //RaycastHit hit;
-        if (Physics.Raycast(ray, out hit,Mathf.Infinity))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         {
             //print(hit.collider.name);
-            if (hit.collider.tag=="button")
+            if (hit.collider.tag == "button")
             {
                 //Debug.Log("selected");
                 animator = hit.collider.gameObject.GetComponent<Animator>();
@@ -56,19 +56,19 @@ public class testing : MonoBehaviour
                 {
                     animator.SetBool("pressedButton", true);
                     animator.SetTrigger("pressed");
-                    
 
-                    Debug.Log("pressed "+animatorFunctions.index);
-                    if(animatorFunctions.index==0 || animatorFunctions.index == 1)
+
+                    Debug.Log("pressed " + animatorFunctions.index);
+                    if (animatorFunctions.index == 0 || animatorFunctions.index == 1)
                     {
                         gameIndex = animatorFunctions.index;
                         StartCoroutine(toInputsMenu());
                     }
-                    else if(animatorFunctions.index>=3 && animatorFunctions.index <= 8)
+                    else if (animatorFunctions.index >= 3 && animatorFunctions.index <= 8)
                     {
                         StartCoroutine(increment_decrement(animatorFunctions.index, hit.collider.gameObject));
                     }
-                    else if(animatorFunctions.index == 9)
+                    else if (animatorFunctions.index == 9)
                     {
                         StartCoroutine(backToStartenu());
                     }
@@ -141,7 +141,7 @@ public class testing : MonoBehaviour
     {
         print(go.transform.parent.GetChild(2));
         yield return new WaitForSeconds(0);
-        if(index==3)
+        if (index == 3)
         {
             if (inhaleTime > 1)
             {
@@ -152,7 +152,7 @@ public class testing : MonoBehaviour
         }
         else if (index == 5)
         {
-            if(exhaleTime > 1)
+            if (exhaleTime > 1)
             {
                 exhaleTime -= 1;
             }
