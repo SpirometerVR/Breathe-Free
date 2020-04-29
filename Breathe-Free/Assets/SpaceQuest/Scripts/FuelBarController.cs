@@ -34,7 +34,7 @@ public class FuelBarController : MonoBehaviour
             if (fuelSlider.value <= 1)
             {
                 // Adjust the speed based on the inhaleTargetTime
-                IncreaseFuel(playerScript.inhaleDuration/playerScript.inhaleTargetTime);
+                IncreaseFuel(playerScript.inhaleDuration / RocketController.inhaleTargetTime);
                 fuelLevel = GetFuelLevel();
             }
         }
@@ -76,7 +76,7 @@ public class FuelBarController : MonoBehaviour
     // Method to decrease fuel bar while exhaling.
     private void DecreaseFuel()
     {
-        fuelSlider.value = fuelLevel - (playerScript.exhaleDuration / playerScript.exhaleTargetTime);
+        fuelSlider.value = fuelLevel - (playerScript.exhaleDuration / RocketController.exhaleTargetTime);
     }
 
     private float GetFuelLevel()

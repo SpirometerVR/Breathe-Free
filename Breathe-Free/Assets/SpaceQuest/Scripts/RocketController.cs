@@ -18,14 +18,14 @@ public class RocketController : MonoBehaviour
     public bool inBounds = true;
 
     // Public target times can be adjusted by doctor/patient.
-    public float exhaleTargetTime = 1f;
-    public float inhaleTargetTime = 1f;
+    public static float exhaleTargetTime = 1f;
+    public static float inhaleTargetTime = 1f;
     public float exhaleDuration;
     public float inhaleDuration;
 	public float breakDuration;
 
 	// Public cycles variable can be adjusted by doctor/patient.
-	public float cycles = 5f;
+	public static float cycles = 5f;
     public float cycleCounter = 0f;
     public bool gameOver = false;
     public bool submitNewScore = true;

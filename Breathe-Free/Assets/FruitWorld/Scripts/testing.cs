@@ -120,6 +120,9 @@ public class testing : MonoBehaviour
         mechanics.inhaleTime = inhaleTime;
         mechanics.exhaleTime = exhaleTime;
         mechanics.numOfCycles = numOfCycles;
+        RocketController.inhaleTargetTime = inhaleTime;
+        RocketController.exhaleTargetTime = exhaleTime;
+        RocketController.cycles = numOfCycles;
         if (gameIndex == 0)
         {
             SceneManager.LoadScene("FruitWorld");

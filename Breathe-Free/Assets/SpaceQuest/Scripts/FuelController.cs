@@ -48,21 +48,21 @@ public class FuelController : MonoBehaviour
         if (playerScript.inhalePhase && playerScript.inhaleIsOn)
         {
             // Move the right fuel towards the engine for the first portion of inhaling.
-            if (playerScript.inhaleDuration > 0 && playerScript.inhaleDuration <= playerScript.inhaleTargetTime / numFuels)
+            if (playerScript.inhaleDuration > 0 && playerScript.inhaleDuration <= RocketController.inhaleTargetTime / numFuels)
             {
-                rightFuel.transform.position = Vector3.MoveTowards(rightFuel.transform.position, rightThruster.transform.position, (speed / playerScript.inhaleTargetTime) * Time.deltaTime);
+                rightFuel.transform.position = Vector3.MoveTowards(rightFuel.transform.position, rightThruster.transform.position, (speed / RocketController.inhaleTargetTime) * Time.deltaTime);
                 // Play fuel sound when it reaches the thruster.
-                if(playerScript.inhaleDuration == playerScript.inhaleTargetTime / numFuels)
+                if(playerScript.inhaleDuration == RocketController.inhaleTargetTime / numFuels)
 				{
                     playerScript.audio.PlayOneShot(fuelSound, 0.5f);
                 }
             }
             // Move the left fuel towards the engine for the second portion of inhaling.
-            else if (playerScript.inhaleDuration > playerScript.inhaleTargetTime / numFuels && playerScript.inhaleDuration <= 2 * (playerScript.inhaleTargetTime / numFuels))
+            else if (playerScript.inhaleDuration > RocketController.inhaleTargetTime / numFuels && playerScript.inhaleDuration <= 2 * (RocketController.inhaleTargetTime / numFuels))
 			{
-                leftFuel.transform.position = Vector3.MoveTowards(leftFuel.transform.position, leftThruster.transform.position, (speed / playerScript.inhaleTargetTime) * Time.deltaTime);
+                leftFuel.transform.position = Vector3.MoveTowards(leftFuel.transform.position, leftThruster.transform.position, (speed / RocketController.inhaleTargetTime) * Time.deltaTime);
                 // Play fuel sound when it reaches the thruster.
-                if (playerScript.inhaleDuration == 2 * (playerScript.inhaleTargetTime / numFuels))
+                if (playerScript.inhaleDuration == 2 * (RocketController.inhaleTargetTime / numFuels))
                 {
                     playerScript.audio.PlayOneShot(fuelSound, 0.5f);
                 }
@@ -70,9 +70,9 @@ public class FuelController : MonoBehaviour
             // Move the middle fuel towards the engine for the last portion of inhaling.
             else 
 			{
-                middleFuel.transform.position = Vector3.MoveTowards(middleFuel.transform.position, middleThruster.transform.position, (speed / (playerScript.inhaleTargetTime * 1.95f)) * Time.deltaTime);
+                middleFuel.transform.position = Vector3.MoveTowards(middleFuel.transform.position, middleThruster.transform.position, (speed / (RocketController.inhaleTargetTime * 1.95f)) * Time.deltaTime);
                 // Play fuel sound when it reaches the thruster.
-                if (playerScript.inhaleDuration == playerScript.inhaleTargetTime)
+                if (playerScript.inhaleDuration == RocketController.inhaleTargetTime)
                 {
                     playerScript.audio.PlayOneShot(fuelSound, 0.5f);
                 }

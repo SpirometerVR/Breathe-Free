@@ -27,8 +27,8 @@ public class BreathObjectGenerator : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Rocket");
-        playerScript = player.GetComponent<RocketController>();
-    }
+		playerScript = player.GetComponent<RocketController>();
+	}
 
     // Update is called once per frame
     void Update()
@@ -62,7 +62,7 @@ public class BreathObjectGenerator : MonoBehaviour
                     {
                         SpawnRemainingDiamonds();
                         // Reset the diamond flags.
-                        if (diamondCount == playerScript.exhaleTargetTime)
+                        if (diamondCount == RocketController.exhaleTargetTime)
                         {
                             diamondCount = 1;
                             firstDiamondSpawn = false;
@@ -97,7 +97,7 @@ public class BreathObjectGenerator : MonoBehaviour
         Vector3 playerForward = Vector3.Cross(transform.forward, new Vector3(0, 1, 0));
         Quaternion playerRotation = Quaternion.Euler(90, 180, 0);
         // Continue spawning diamonds until their target quantity is reached.
-        if (diamondCount < playerScript.exhaleTargetTime)
+        if (diamondCount < RocketController.exhaleTargetTime)
         {
             remainingDiamondDistance += 163.5f;
             // Spawn the diamond behind the most recent diamond spawned as long as the first diamond was spawned correctly.

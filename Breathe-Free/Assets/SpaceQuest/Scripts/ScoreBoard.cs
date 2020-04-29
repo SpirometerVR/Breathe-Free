@@ -38,7 +38,7 @@ public class ScoreBoard : MonoBehaviour
         //spedometerCard = GameObject.FindGameObjectWithTag("Spedometer").GetComponent<ScoreBoard>();
 
         // Set the target score based on the exhale cycles.
-        totalDiamonds = player.exhaleTargetTime * player.cycles;
+        totalDiamonds = RocketController.exhaleTargetTime * RocketController.cycles;
     }
 
     // Update is called once per frame
