@@ -13,6 +13,6 @@ public class CameraControllerFruit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transfrom.position = new Vector3(1.7f, 0.69f, -12.63f);
+        transform.position = new Vector3(1.7f, 0.69f, -12.63f);
     }
 }
