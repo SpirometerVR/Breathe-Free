@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class mechanics : MonoBehaviour
 {
@@ -16,7 +18,7 @@ public class mechanics : MonoBehaviour
 
     private bool stoneHandUpdate;                   // aids in calculating the distance of stone-hand just once.
     private bool stoneFruitUpdate;                  // aids in calculating the distance of stone-fruit just once.
-    private bool canMove = false;                   // can the stone move from its position towards the hand.
+    private bool isMovingTowardsPlayer = false;                   // can the stone move from its position towards the hand.
     private bool canShoot = false;                  // determines wether or not the stone can be launched based on its position
     private bool canSummon = true;                  // can summon the stone or not
 
@@ -30,8 +32,12 @@ public class mechanics : MonoBehaviour
     private float stoneHandDistance;                // for distance between stone and hand
     private float stoneFruitDistance;               // for distance between stone and fruit
 
+    [SerializeField] private GameObject CanvasText;
     [SerializeField] private List<GameObject> vfx;  // array of particle system attached to stone
     [SerializeField] private GameObject sel;
+    [SerializeField] private GameObject myCamera;
+
+    Coroutine coroutineInhale, coroutineExhale;
 
     private void Awake()
     {
@@ -44,13 +50,18 @@ public class mechanics : MonoBehaviour
         oscScript.SetAddressHandler("/Spirometer/C", BreathData);
         s = sel.GetComponent<select>();
 
-        inhaleTime = 2;
-        exhaleTime = 2;
+        inhaleTime = 3;
+        exhaleTime = 3;
 
         stoneHandUpdate = true;
+        stoneFruitUpdate = true;
+
 
         stoneHandDistance = 0;
         stoneFruitDistance = 0;
+
+        CanvasText.GetComponent<Text>().text = inhaleTime.ToString();
+        
 
 
     }
@@ -90,25 +101,25 @@ public class mechanics : MonoBehaviour
             else
             {
                 cont = stones[count].GetComponent<ParabolaController>();
-                canMove = true;
+                isMovingTowardsPlayer = true;
                 vfx[count].SetActive(true);
                 vfx[count].transform.GetChild(0).gameObject.SetActive(false);
 
                 if (stoneHandUpdate)
                 {
+                    CanvasText.GetComponent<Text>().text = inhaleTime.ToString();
+                    coroutineInhale = StartCoroutine(countDownInhale(inhaleTime));
+
                     stoneHandDistance = Vector3.Distance(stones[count].transform.position, transform.position);
-                    stoneHandDistance -= 0.2f;
+                    stoneHandDistance -= 0.4f;                   
                     stoneHandUpdate = false;
-
                 }
-
                 if (Vector3.Distance(stones[count].transform.position, transform.position) > 0.45f)
                 {
                     stones[count].transform.position = Vector3.MoveTowards(stones[count].transform.position, transform.position + transform.forward * 0.4f - transform.up * 0.1f, Time.deltaTime * (stoneHandDistance / inhaleTime));
+                    
                 }
-
-
-
+     
             }
 
         }
@@ -116,12 +127,14 @@ public class mechanics : MonoBehaviour
         // called if player stops inhaling before stone reaches the player
 
         //else if (move && flag!=1 && Vector3.Distance(stones[count].transform.position, transform.position) > 0.2f)
-        else if (canMove && !Input.GetKey(KeyCode.Space) && Vector3.Distance(stones[count].transform.position, transform.position) > 0.45f)
+        else if (isMovingTowardsPlayer && !Input.GetKey(KeyCode.Space) && Vector3.Distance(stones[count].transform.position, transform.position) > 0.45f)
         {
             stones[count].GetComponent<Rigidbody>().useGravity = true;
-            count++;
-            canMove = false;
+            StopCoroutine(coroutineInhale);
             vfx[count].SetActive(false);
+            count++;
+            isMovingTowardsPlayer = false;
+            
             stoneHandUpdate = true;
         }
 
@@ -130,6 +143,7 @@ public class mechanics : MonoBehaviour
         if (Vector3.Distance(stones[count].transform.position, this.transform.position) <= 0.45f)
         {
             stones[count].transform.position = transform.position + transform.forward * 0.4f - transform.up * 0.1f;
+            
             //stones[count].transform.rotation = new Quaternion(0.0f, transform.rotation.y, 0.0f, transform.rotation.w);
         }
 
@@ -137,9 +151,11 @@ public class mechanics : MonoBehaviour
         // When stone has arrived
         if ((Input.GetKey(KeyCode.D) || OVRInput.Get(OVRInput.RawButton.A) || flag == 3) && Vector3.Distance(stones[count].transform.position, this.transform.position) <= 0.45f && fruitCount < fru.Count && s.stay)
         {
+            
+
             vfx[count].transform.GetChild(0).gameObject.SetActive(true);
 
-            canMove = false;
+            isMovingTowardsPlayer = false;
             canShoot = true;
             canSummon = false;
 
@@ -167,9 +183,13 @@ public class mechanics : MonoBehaviour
             }
             if (stoneFruitUpdate)
             {
+                CanvasText.GetComponent<Text>().text = exhaleTime.ToString();
+                coroutineExhale = StartCoroutine(countDownExhale(exhaleTime));
+
                 stoneFruitDistance = Vector3.Distance(stones[count].transform.position, s.go.transform.position);
                 stoneFruitDistance -= 1f;
                 cont.Speed = stoneFruitDistance / exhaleTime;
+
                 stoneFruitUpdate = false;
             }
             cont.ParabolaRoot = root;
@@ -186,6 +206,8 @@ public class mechanics : MonoBehaviour
             stones[count].GetComponent<Rigidbody>().useGravity = true;
             vfx[count].SetActive(false);
             count++;
+            StopCoroutine(coroutineExhale);
+
 
             cont.enabled = false;
             canSummon = true;
@@ -197,7 +219,7 @@ public class mechanics : MonoBehaviour
 
 
         //When stone has hit the fruit
-        if (count < stones.Count && stones[count] && Vector3.Distance(stones[count].transform.position, s.go.transform.position) < 1f && fruitCount < fru.Count)
+        if (s.go && count < stones.Count && stones[count] && Vector3.Distance(stones[count].transform.position, s.go.transform.position) < 1f && fruitCount < fru.Count)
         {
             var particleEffect = stones[count].transform.GetChild(0);
             stones[count].transform.GetChild(0).transform.parent = null;
@@ -231,5 +253,26 @@ public class mechanics : MonoBehaviour
     }
 
 
+    IEnumerator countDownInhale(float startVal)
+    {
+        while (startVal > 0)
+        {
+            yield return new WaitForSeconds(1.0f);
+            startVal--;
+            CanvasText.GetComponent<Text>().text = startVal.ToString();
+        }
+
+    }
+
+    IEnumerator countDownExhale(float startVal)
+    {
+        while (startVal > 0)
+        {
+            yield return new WaitForSeconds(1.0f);
+            startVal--;
+            CanvasText.GetComponent<Text>().text = startVal.ToString();
+        }
+
+    }
 
 }

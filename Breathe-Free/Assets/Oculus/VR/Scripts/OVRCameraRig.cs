@@ -40,9 +40,7 @@ public class OVRCameraRig : MonoBehaviour
 	/// <summary>
 	/// The left eye camera.
 	/// </summary>
-	
 	public Camera leftEyeCamera { get { return (usePerEyeCameras) ? _leftEyeCamera : _centerEyeCamera; } }
-	
 	/// <summary>
 	/// The right eye camera.
 	/// </summary>
