@@ -219,7 +219,7 @@ public class mechanics : MonoBehaviour
 
 
         //When stone has hit the fruit
-        if (count < stones.Count && stones[count] && Vector3.Distance(stones[count].transform.position, s.go.transform.position) < 1f && fruitCount < fru.Count)
+        if (s.go && count < stones.Count && stones[count] && Vector3.Distance(stones[count].transform.position, s.go.transform.position) < 1f && fruitCount < fru.Count)
         {
             var particleEffect = stones[count].transform.GetChild(0);
             stones[count].transform.GetChild(0).transform.parent = null;
