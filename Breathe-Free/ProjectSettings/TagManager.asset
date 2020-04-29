@@ -36,6 +36,7 @@ TagManager:
   - Leader Board
   - Leader Names
   - Leader Scores
+  - Flower Light
   layers:
   - Default
   - TransparentFX

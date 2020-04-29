@@ -8,6 +8,7 @@ public class mechanics : MonoBehaviour
 {
 
     public float flag = 0;
+    public GameObject flowerLight;
     public bool playPluck = false;                  // wether or not to play the pluck sound
     public List<GameObject> stones;                 // all the stones
     public List<GameObject> fru;                    // all the fruits
@@ -71,6 +72,20 @@ public class mechanics : MonoBehaviour
     {
         float breath_value = message.GetFloat(0);
         Debug.Log(breath_value + " breath");
+        // Turn flower light off if spirometer is not connected.
+        if (breath_value > 0)
+        {
+            MeshRenderer flowerLightRend = flowerLight.GetComponent<MeshRenderer>();
+            Material newColor = (Material)Resources.Load("Materials-SQ/Green - SQ", typeof(Material));
+            flowerLightRend.material = newColor;
+        }
+        // Turn flower light off if spirometer is not connected.
+        else
+        {
+            MeshRenderer flowerLightRend = flowerLight.GetComponent<MeshRenderer>();
+            Material newColor = (Material)Resources.Load("Materials-SQ/Red - SQ", typeof(Material));
+            flowerLightRend.material = newColor;
+        }
         if (breath_value <= 1170)
         {
             flag = 1;
