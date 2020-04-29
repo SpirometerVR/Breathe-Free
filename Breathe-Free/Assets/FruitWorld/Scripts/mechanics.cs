@@ -71,17 +71,17 @@ public class mechanics : MonoBehaviour
     {
         float breath_value = message.GetFloat(0);
         Debug.Log(breath_value + " breath");
-        if (breath_value >= 2600)
+        if (breath_value <= 1170)
         {
             flag = 1;
         }
-        else if (breath_value < 2600 && breath_value >= 1300)
+        else if (breath_value >= 1500)
         {
-            flag = 2;
+            flag = 3;
         }
         else
         {
-            flag = 3;
+            flag = 2;
         }
     }
 
