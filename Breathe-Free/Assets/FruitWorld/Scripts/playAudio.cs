@@ -5,8 +5,8 @@ using UnityEngine;
 public class playAudio : MonoBehaviour
 {
     [SerializeField] public List<AudioSource> audio;
-    private mechanics m;
-    private pauseMenu p;
+    public mechanics m;
+    public pauseMenu p;
 
     // Start is called before the first frame update
     void Start()
