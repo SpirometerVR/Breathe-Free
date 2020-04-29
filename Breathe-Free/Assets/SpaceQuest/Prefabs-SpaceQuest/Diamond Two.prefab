@@ -319,6 +319,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 19824040, guid: 4d7cade01d366e7458905879e0874956, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 19824040, guid: 4d7cade01d366e7458905879e0874956, type: 3}
       propertyPath: simulationSpeed
       value: 2
       objectReference: {fileID: 0}

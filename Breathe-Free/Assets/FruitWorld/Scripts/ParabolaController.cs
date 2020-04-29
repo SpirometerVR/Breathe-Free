@@ -6,7 +6,7 @@ public class ParabolaController : MonoBehaviour
     /// <summary>
     /// Animation Speed
     /// </summary>
-    public float Speed = 1;
+    public float Speed;
 
     /// <summary>
     /// Start of Parabola
