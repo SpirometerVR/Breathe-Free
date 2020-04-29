@@ -117,10 +117,9 @@ public class mechanics : MonoBehaviour
             {
                 cont = stones[count].GetComponent<ParabolaController>();
                 isMovingTowardsPlayer = true;
-                vfx[count].SetActive(true);
-                vfx[count].transform.GetChild(0).gameObject.SetActive(false);
+				//vfx[count].transform.GetChild(0).gameObject.SetActive(false);
 
-                if (stoneHandUpdate)
+				if (stoneHandUpdate)
                 {
                     CanvasText.GetComponent<Text>().text = inhaleTime.ToString();
                     coroutineInhale = StartCoroutine(countDownInhale(inhaleTime));
@@ -146,7 +145,7 @@ public class mechanics : MonoBehaviour
         {
             stones[count].GetComponent<Rigidbody>().useGravity = true;
             StopCoroutine(coroutineInhale);
-            vfx[count].SetActive(false);
+            //vfx[count].SetActive(false);
             count++;
             isMovingTowardsPlayer = false;
 
@@ -167,8 +166,8 @@ public class mechanics : MonoBehaviour
         if ((Input.GetKey(KeyCode.D) || OVRInput.Get(OVRInput.RawButton.A) || flag == 3) && Vector3.Distance(stones[count].transform.position, this.transform.position) <= 0.45f && fruitCount < fru.Count && s.stay)
         {
 
-
-            vfx[count].transform.GetChild(0).gameObject.SetActive(true);
+			vfx[count].SetActive(true);
+			//vfx[count].transform.GetChild(0).gameObject.SetActive(true);
 
             isMovingTowardsPlayer = false;
             canShoot = true;
@@ -214,10 +213,12 @@ public class mechanics : MonoBehaviour
         }
 
 
-        // when player stops exhaling before stone hits the fruit
-        //else if (canShoot && flag!=3 && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
-        else if (canShoot && !Input.GetKey(KeyCode.D) && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
-        {
+		// when player stops exhaling before stone hits the fruit
+		//else if (canShoot && flag!=3 && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
+		// For keyboard playability, uncomment else if below and comment out the else if on line 221.
+		//else if (canShoot && !Input.GetKey(KeyCode.D) && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
+		else if (canShoot && flag != 3 && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
+		{
             stones[count].GetComponent<Rigidbody>().useGravity = true;
             vfx[count].SetActive(false);
             count++;
