@@ -7,19 +7,6 @@ public class playAudio : MonoBehaviour
     [SerializeField] public List<AudioSource> audio;
     public mechanics m;
     public pauseMenu p;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //audio = GetComponent<AudioSource>();
-        //audio = GetComponent<AudioSource>();
-        //audio.Play();   
-        m = GameObject.Find("hand").GetComponent<mechanics>();
-
-
-    }
-
-    // Update is called once per frame
     void FixedUpdate()
     {
 
@@ -39,7 +26,6 @@ public class playAudio : MonoBehaviour
             }
 
         }
-        Debug.Log(pauseMenu.isPaused);
     }
     IEnumerator change()
     {

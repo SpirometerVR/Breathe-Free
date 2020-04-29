@@ -466,7 +466,6 @@ public class UDPPacketIO
 	/// <param name="ah">The method to call back on.</param>   
 	public void SetAddressHandler(string key, OscMessageHandler ah)
 	{
-        Debug.Log("here I am");
 		ArrayList al = (ArrayList)Hashtable.Synchronized(AddressTable)[key];
 		if ( al == null) {
 			al = new ArrayList();
