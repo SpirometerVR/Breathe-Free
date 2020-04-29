@@ -14,7 +14,7 @@ public class playAudio : MonoBehaviour
         //audio = GetComponent<AudioSource>();
         //audio = GetComponent<AudioSource>();
         //audio.Play();   
-        m = GameObject.Find("hand").GetComponent<mechanics>();
+        //m = GameObject.Find("hand").GetComponent<mechanics>();
 
 
     }
