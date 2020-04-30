@@ -74,6 +74,7 @@ public class RocketController : MonoBehaviour
     //public ScoreBoard spedometer;
 
     public GameObject leaderBoard;
+    public GameObject ovrGazePointer;
 
     public BreathObjectGenerator breathGen;
 
@@ -125,7 +126,9 @@ public class RocketController : MonoBehaviour
         // get the reference here...
         this.sqLeaderBoard = dreamloLeaderBoard.GetSceneDreamloLeaderboard();
         leaderBoard = GameObject.FindGameObjectWithTag("Leader Board");
+        ovrGazePointer = GameObject.FindGameObjectWithTag("OVRGazePointer");
         leaderBoard.SetActive(false);
+        ovrGazePointer.SetActive(false);
 
         this.gState = gameState.running;
     }
@@ -150,6 +153,7 @@ public class RocketController : MonoBehaviour
 
             // display the leader board
             leaderBoard.SetActive(true);
+            ovrGazePointer.SetActive(true);
 
             if (sqLeaderBoard.publicCode == "") Debug.LogError("You forgot to set the publicCode variable");
             if (sqLeaderBoard.privateCode == "") Debug.LogError("You forgot to set the privateCode variable");
@@ -172,7 +176,7 @@ public class RocketController : MonoBehaviour
             }
             else
             {
-                int maxToDisplay = 5;
+                int maxToDisplay = 6;
                 int count = 0;
                 foreach (dreamloLeaderBoard.Score currentScore in scoreList)
                 {

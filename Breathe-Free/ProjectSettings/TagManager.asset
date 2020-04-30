@@ -9,34 +9,35 @@ TagManager:
   - stone
   - hunted
   - button
-  - Right Fuel
-  - Left Fuel
-  - Middle Fuel
-  - Fuel
-  - Space
-  - Planet
-  - Mini Diamond Two
-  - Diamond
-  - Diamond Two
-  - Flower Light
-  - Fuel Bar
   - Middle Thruster
   - Out Of Bounds Canvas
-  - Leader Scores
-  - Engine Light
-  - Leader Names
-  - Leader Board
   - Spedometer
   - Final Score
   - Left Thruster
   - Diamond Score
   - Right Thruster
   - Out Of Bounds
-  - Asteroid
+  - Space
+  - Planet
   - Rocket
-  - Asteroid Destroyer
   - Mini Diamond
-  - Fruit Points
+  - Mini Diamond Two
+  - Diamond
+  - Diamond Two
+  - Fuel
+  - Right Fuel
+  - Left Fuel
+  - Middle Fuel
+  - Asteroid Destroyer
+  - Asteroid
+  - Fuel Bar
+  - Engine Light
+  - Diamond Explode
+  - Leader Board
+  - Leader Names
+  - Leader Scores
+  - Flower Light
+  - OVRGazePointer
   layers:
   - Default
   - TransparentFX
