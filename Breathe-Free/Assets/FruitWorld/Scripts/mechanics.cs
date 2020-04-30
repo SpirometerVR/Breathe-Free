@@ -236,10 +236,9 @@ public class mechanics : MonoBehaviour
 			// when player stops exhaling before stone hits the fruit
 			//else if (canShoot && flag!=3 && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
 			// For keyboard playability, uncomment else if below and comment out the else if on line 221.
-			else if (canShoot && !Input.GetKey(KeyCode.D) && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
-
-			//else if (canShoot && flag != 3 && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
-            {
+			//else if (canShoot && !Input.GetKey(KeyCode.D) && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
+			else if (canShoot && flag != 3 && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
+			{
                 stones[count].GetComponent<Rigidbody>().useGravity = true;
                 vfx[count].SetActive(false);
                 count++;

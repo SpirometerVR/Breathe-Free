@@ -39,7 +39,6 @@ public class select : MonoBehaviour
         foreach (Collider targetFruit in triggerList)
         {
 
-
             float dist = Vector3.Cross(ray.direction, targetFruit.gameObject.transform.position - ray.origin).magnitude;
             if (dist < fruitDistance)
             {
