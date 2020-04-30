@@ -57,9 +57,9 @@ public class mechanics : MonoBehaviour
         oscScript.SetAddressHandler("/Spirometer/C", BreathData);
         s = sel.GetComponent<select>();
 
-        //inhaleTime = 3;
-        //exhaleTime = 3;
-        //numOfCycles = 5;
+        inhaleTime = 3;
+        exhaleTime = 3;
+        numOfCycles = 5;
         cycleCounter = 0;
 
         stoneHandUpdate = true;
@@ -115,7 +115,7 @@ public class mechanics : MonoBehaviour
     {
         OVRInput.Update();
 
-        ScoreText.GetComponent<Text>().text = "Points: " + score.ToString();
+        ScoreText.GetComponent<Text>().text = "Cycles Left: " + (numOfCycles - cycleCounter).ToString();
 
         if (cycleCounter == numOfCycles)
 		{
@@ -238,7 +238,7 @@ public class mechanics : MonoBehaviour
 			// For keyboard playability, uncomment else if below and comment out the else if on line 221.
 			//else if (canShoot && !Input.GetKey(KeyCode.D) && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
 			else if (canShoot && flag != 3 && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
-			{
+					{
                 stones[count].GetComponent<Rigidbody>().useGravity = true;
                 vfx[count].SetActive(false);
                 count++;

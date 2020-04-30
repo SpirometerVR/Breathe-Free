@@ -38,28 +38,32 @@ public class select : MonoBehaviour
         tempDir = ray.direction;
         foreach (Collider targetFruit in triggerList)
         {
-
-            float dist = Vector3.Cross(ray.direction, targetFruit.gameObject.transform.position - ray.origin).magnitude;
-            if (dist < fruitDistance)
+            if (targetFruit != null)
             {
-                fruitDistance = dist;
-                go = targetFruit.gameObject;
-                if (previousGo)
+                float dist = Vector3.Cross(ray.direction, targetFruit.gameObject.transform.position - ray.origin).magnitude;
+                if (dist < fruitDistance)
                 {
-                    previousGo.transform.GetChild(0).gameObject.SetActive(false);
+                    fruitDistance = dist;
+                    go = targetFruit.gameObject;
+                    if (previousGo)
+                    {
+                        previousGo.transform.GetChild(0).gameObject.SetActive(false);
+
+                    }
+                    go.transform.GetChild(0).gameObject.SetActive(true);
+                    previousGo = go;
+                    Debug.Log(dist + " from " + go);
 
                 }
-                go.transform.GetChild(0).gameObject.SetActive(true);
-                previousGo = go;
-                Debug.Log(dist + " from " + go);
-
             }
 
         }
 
-
-		Debug.DrawLine(ray.origin, go.transform.position, Color.red, 2f);
-		Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 10, Color.red);
+        if (go != null)
+        {
+            Debug.DrawLine(ray.origin, go.transform.position, Color.red, 2f);
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 10, Color.red);
+        }
 	}
 
     private void OnTriggerEnter(Collider other)

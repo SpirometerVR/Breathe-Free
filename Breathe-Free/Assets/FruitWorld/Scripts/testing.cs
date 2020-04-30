@@ -2,125 +2,207 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using TMPro;
-using UnityEngine.EventSystems;
 
 public class testing : MonoBehaviour
 {
-
+    Ray ray;
+    RaycastHit hit;
+    private Animator animator;
+    private Animator lastAnimator;
+    private MenuAnimatorFunctions animatorFunctions;
     public static AudioSource audio;
     private int inhaleTime;
     private int exhaleTime;
     private int numOfCycles;
     public int gameIndex = -1;
-    private GameObject game;
-
-    public GameObject buttons;
-    public GameObject inputs;
 
 
 
     [SerializeField] Animator MenuAnimator;
-    [SerializeField] TextMeshProUGUI inhaleText;
-    [SerializeField] TextMeshProUGUI exhaleText;
-    [SerializeField] TextMeshProUGUI cyclesText;
 
 
     private void Start()
     {
+        lastAnimator = null;
         audio = GetComponent<AudioSource>();
         inhaleTime = 1;
         exhaleTime = 1;
         numOfCycles = 1;
     }
 
-    
+    void Update()
+    {
 
-    public void toInputs()
-    {
-        buttons.SetActive(false);
-        inputs.SetActive(true);
-        audio.PlayOneShot(audio.clip);
-        game=EventSystem.current.currentSelectedGameObject;
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        {
+            //print(hit.collider.name);
+            if (hit.collider.tag == "button")
+            {
+                //Debug.Log("selected");
+                animator = hit.collider.gameObject.GetComponent<Animator>();
+                animatorFunctions = hit.collider.gameObject.GetComponent<MenuAnimatorFunctions>();
+                if (lastAnimator && lastAnimator != animator)
+                {
+                    lastAnimator.SetBool("selected", false);
+                }
+                lastAnimator = animator;
 
-        Debug.Log(game);
+                animator.SetBool("selected", true);
+                if (Input.GetMouseButtonDown(0))
+                {
+                    animator.SetBool("pressedButton", true);
+                    animator.SetTrigger("pressed");
+
+
+                    Debug.Log("pressed " + animatorFunctions.index);
+                    if (animatorFunctions.index == 0 || animatorFunctions.index == 1)
+                    {
+                        gameIndex = animatorFunctions.index;
+                        StartCoroutine(toInputsMenu());
+                    }
+                    else if (animatorFunctions.index >= 3 && animatorFunctions.index <= 8)
+                    {
+                        StartCoroutine(increment_decrement(animatorFunctions.index, hit.collider.gameObject));
+                    }
+                    else if (animatorFunctions.index == 9)
+                    {
+                        StartCoroutine(backToStartenu());
+                    }
+                    else if (animatorFunctions.index == 10)
+                    {
+                        StartCoroutine(startGame());
+                    }
+                    else
+                    {
+                        Debug.Log("Quit Game");
+                        //StartCoroutine(quit());                     
+                    }
+                }
+            }
+            else
+            {
+                //Debug.Log("not selected");
+                animator.SetBool("selected", false);
+
+            }
+        }
+        else
+        {
+            //Debug.Log("not selected");
+            if (animator)
+            {
+                animator.SetBool("selected", false);
+
+            }
+        }
+
+        if (animator && animator.GetBool("pressedButton"))
+        {
+            animator.SetBool("pressedButton", false);
+            animatorFunctions.disableOnce = true;
+        }
     }
 
-    public void toStart()
+    IEnumerator toInputsMenu()
     {
-        buttons.SetActive(true);
-        inputs.SetActive(false);
         audio.PlayOneShot(audio.clip);
-
+        yield return new WaitForSeconds(0.1f);
+        MenuAnimator.SetTrigger("toInputMenu");
     }
-
-    public void incrementInhale()
+    IEnumerator startGame()
     {
-        if (inhaleTime < 15)
-            inhaleTime++;
-        inhaleText.text = inhaleTime.ToString();
         audio.PlayOneShot(audio.clip);
-    }
-    public void incrementExhale()
-    {
-        if (exhaleTime < 15)
-            exhaleTime++;
-        exhaleText.text = exhaleTime.ToString();
-        audio.PlayOneShot(audio.clip);
-    }
-    public void incrementCycles()
-    {
-        if (numOfCycles < 20)
-            numOfCycles++;
-        cyclesText.text = numOfCycles.ToString();
-        audio.PlayOneShot(audio.clip);
-    }
-
-    public void decrementInhale()
-    {
-        if (inhaleTime > 1)
-            inhaleTime--;
-        inhaleText.text = inhaleTime.ToString();
-        audio.PlayOneShot(audio.clip);
-    }
-    public void decrementExhale()
-    {
-        if (exhaleTime >1)
-            exhaleTime--;
-        exhaleText.text = exhaleTime.ToString();
-        audio.PlayOneShot(audio.clip);
-    }
-    public void decrementCycles()
-    {
-        if (numOfCycles >1)
-            numOfCycles--;
-        cyclesText.text = numOfCycles.ToString();
-        audio.PlayOneShot(audio.clip);
-    }
-
-    public void quitGame()
-    {
-        Debug.Log("Quit");
-        Application.Quit();
-        audio.PlayOneShot(audio.clip);
-    }
-
-    public void startGame()
-    {
-        Debug.Log(game);
+        yield return new WaitForSeconds(1f);
         mechanics.inhaleTime = inhaleTime;
         mechanics.exhaleTime = exhaleTime;
         mechanics.numOfCycles = numOfCycles;
         RocketController.inhaleTargetTime = inhaleTime;
         RocketController.exhaleTargetTime = exhaleTime;
         RocketController.cycles = numOfCycles;
-
-
-        if (game.name == "FruitWorldButton")
+        if (gameIndex == 0)
+        {
             SceneManager.LoadScene("FruitWorld");
-        else
-            SceneManager.LoadScene("SpaceQuest");
-        audio.PlayOneShot(audio.clip);
-    }
 
+        }
+        else if (gameIndex == 1)
+        {
+            SceneManager.LoadScene("SpaceQuest");
+        }
+    }
+    IEnumerator backToStartenu()
+    {
+        audio.PlayOneShot(audio.clip);
+        yield return new WaitForSeconds(0.1f);
+        MenuAnimator.SetTrigger("toStartMenu");
+
+    }
+    IEnumerator increment_decrement(int index, GameObject go)
+    {
+        print(go.transform.parent.GetChild(2));
+        yield return new WaitForSeconds(0);
+        if (index == 3)
+        {
+            if (inhaleTime > 1)
+            {
+                inhaleTime -= 1;
+            }
+            go.transform.parent.GetChild(2).GetComponent<TextMeshProUGUI>().text = inhaleTime.ToString();
+
+        }
+        else if (index == 5)
+        {
+            if (exhaleTime > 1)
+            {
+                exhaleTime -= 1;
+            }
+            go.transform.parent.GetChild(2).GetComponent<TextMeshProUGUI>().text = exhaleTime.ToString();
+
+        }
+        else if (index == 7)
+        {
+            if (numOfCycles > 1)
+            {
+                numOfCycles -= 1;
+            }
+            go.transform.parent.GetChild(2).GetComponent<TextMeshProUGUI>().text = numOfCycles.ToString();
+
+        }
+        else if (index == 4)
+        {
+            if (inhaleTime <= 7)
+            {
+                inhaleTime += 1;
+            }
+            go.transform.parent.GetChild(2).GetComponent<TextMeshProUGUI>().text = inhaleTime.ToString();
+
+        }
+        else if (index == 6)
+        {
+            if (exhaleTime <= 7)
+            {
+                exhaleTime += 1;
+            }
+            go.transform.parent.GetChild(2).GetComponent<TextMeshProUGUI>().text = exhaleTime.ToString();
+
+        }
+        else if (index == 8)
+        {
+            if (numOfCycles <= 9)
+            {
+                numOfCycles += 1;
+            }
+            go.transform.parent.GetChild(2).GetComponent<TextMeshProUGUI>().text = numOfCycles.ToString();
+
+        }
+    }
+    IEnumerator quit()
+    {
+        audio.PlayOneShot(audio.clip);
+        yield return new WaitForSeconds(0.1f);
+        Application.Quit();
+    }
 }
