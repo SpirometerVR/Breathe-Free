@@ -57,9 +57,9 @@ public class mechanics : MonoBehaviour
         oscScript.SetAddressHandler("/Spirometer/C", BreathData);
         s = sel.GetComponent<select>();
 
-        inhaleTime = 3;
-        exhaleTime = 3;
-        numOfCycles = 5;
+        //inhaleTime = 3;
+        //exhaleTime = 3;
+        //numOfCycles = 5;
         cycleCounter = 0;
 
         stoneHandUpdate = true;
