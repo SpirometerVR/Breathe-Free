@@ -15,10 +15,18 @@ public class mechanics : MonoBehaviour
     public static int inhaleTime;
     public static int exhaleTime;
     public static int numOfCycles;
+    public static string userName;
     public int cycleCounter = 0;
     public bool gameOver = false;
     public int score = 0;
 
+    // For scoreboard;
+    public GameObject leader;
+    dreamloLeaderBoard fwLeaderBoard;
+    private bool topScoresReceived = false;
+    private Text topNameList;
+    private Text topScoreList;
+    private Text topRankList;
 
     private bool stoneHandUpdate;                   // aids in calculating the distance of stone-hand just once.
     private bool stoneFruitUpdate;                  // aids in calculating the distance of stone-fruit just once.
@@ -38,6 +46,7 @@ public class mechanics : MonoBehaviour
 
     [SerializeField] private GameObject CanvasText;
     [SerializeField] private GameObject ScoreText;
+    [SerializeField] private GameObject FinalScoreText;
     [SerializeField] private List<GameObject> vfx;  // array of particle system attached to stone
     [SerializeField] private GameObject sel;
     [SerializeField] private GameObject myCamera;
@@ -64,6 +73,10 @@ public class mechanics : MonoBehaviour
 
         stoneHandUpdate = true;
         stoneFruitUpdate = true;
+
+        topNameList = GameObject.Find("Top Names List").GetComponent<Text>();
+        topScoreList = GameObject.Find("Top Scores List").GetComponent<Text>();
+        topRankList = GameObject.Find("Top Ranks List").GetComponent<Text>();
 
 
         stoneHandDistance = 0;
@@ -124,6 +137,7 @@ public class mechanics : MonoBehaviour
 
         if (!gameOver)
         {
+            leader.SetActive(false);
             // inhale
             if (canSummon && Input.GetKey(KeyCode.Space) || OVRInput.Get(OVRInput.RawButton.RIndexTrigger) || flag == 1)
             {
@@ -298,9 +312,39 @@ public class mechanics : MonoBehaviour
 		else
         {
             ScoreText.GetComponent<Text>().text = "";
-            CanvasText.GetComponent<Text>().text = "Final Score: " + score + "/" + (numOfCycles * 5);
-        }
+            CanvasText.GetComponent<Text>().text = "";
+            FinalScoreText.GetComponent<Text>().text = "Final Score: " + score + "/" + (numOfCycles * 5);
 
+            leader.SetActive(true);
+
+            if (fwLeaderBoard.publicCode == "") Debug.LogError("You forgot to set the publicCode variable");
+            if (fwLeaderBoard.privateCode == "") Debug.LogError("You forgot to set the privateCode variable");
+
+            fwLeaderBoard.AddScore(userName, (int)(100 * score / (numOfCycles * 5)));
+
+            List<dreamloLeaderBoard.Score> scoreList = fwLeaderBoard.ToListHighToLow();
+
+            if (scoreList == null)
+            {
+                Debug.Log("(loading...)");
+            }
+            else
+            {
+                int maxToDisplay = 6;
+                int countScr = 0;
+                foreach (dreamloLeaderBoard.Score currentScore in scoreList)
+                {
+                    countScr++;
+
+                    //Debug.Log(currentScore.score.ToString());
+                    topRankList.text += count + "\n";
+                    topScoreList.text += currentScore.score.ToString() + "%\n";
+                    topNameList.text += currentScore.playerName.Replace("+", " ") + "\n";
+
+                    if (countScr >= maxToDisplay) break;
+                }
+            }
+        }
     }
     IEnumerator destory(GameObject go)
     {

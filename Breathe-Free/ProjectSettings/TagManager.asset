@@ -38,6 +38,8 @@ TagManager:
   - Leader Scores
   - Flower Light
   - OVRGazePointer
+  - Fruit Points
+  - Final Fruit Score
   layers:
   - Default
   - TransparentFX
