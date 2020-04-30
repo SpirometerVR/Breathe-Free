@@ -493,7 +493,7 @@ public class RocketController : MonoBehaviour
 	// Only allow player to play when looking in the forward direction.
 	private bool cameraBounds()
 	{
-		if ((Camera.main.transform.rotation.eulerAngles.y >= 0 && Camera.main.transform.rotation.eulerAngles.y <= 60) || (Camera.main.transform.rotation.eulerAngles.y >= 300 && Camera.main.transform.rotation.eulerAngles.y <= 360))
+		if ((transform.rotation.eulerAngles.y >= 0 && transform.rotation.eulerAngles.y <= 60) || (transform.rotation.eulerAngles.y >= 300 && transform.rotation.eulerAngles.y <= 360))
         {
 			inBounds = true;
 		}

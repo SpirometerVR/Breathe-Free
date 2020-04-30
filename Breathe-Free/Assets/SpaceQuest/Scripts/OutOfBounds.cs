@@ -7,6 +7,7 @@ public class OutOfBounds : MonoBehaviour
 {
     public GameObject player;
     public RocketController playerScript;
+    public GameObject mainCam;
 
     public GameObject arrowOne;
     public GameObject arrowTwo;
@@ -40,28 +41,30 @@ public class OutOfBounds : MonoBehaviour
         if (!playerScript.gameOver)
         {
             // Only print error when the camera view is out of bounds.
-            if (playerScript.inBounds && (Camera.main.transform.rotation.eulerAngles.y >= 0 && Camera.main.transform.rotation.eulerAngles.y <= 60) || (Camera.main.transform.rotation.eulerAngles.y >= 300 && Camera.main.transform.rotation.eulerAngles.y <= 360))
+            if ((mainCam.transform.rotation.eulerAngles.y >= 0 && mainCam.transform.rotation.eulerAngles.y <= 60) || (mainCam.transform.rotation.eulerAngles.y >= 300 && mainCam.transform.rotation.eulerAngles.y <= 360))
             {
                 // Lock Rotation on X and Z Axis.
-                OutOfBoundsCanvas.transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
-                outOfBoundsText.text = "";
+                OutOfBoundsCanvas.transform.rotation = Quaternion.Euler(0, mainCam.transform.rotation.eulerAngles.y, 0);
+				outOfBoundsText.text = "";
+				//OutOfBoundsCanvas.SetActive(false);
 
-                // Turn off arrows.
-                arrowOne.GetComponent<Renderer>().enabled = false;
+				// Turn off arrows.
+				arrowOne.GetComponent<Renderer>().enabled = false;
                 arrowTwo.GetComponent<Renderer>().enabled = false;
                 arrowThree.GetComponent<Renderer>().enabled = false;
                 arrowFour.GetComponent<Renderer>().enabled = false;
             }
             else
             {
-                // Lock Rotation on X and Z Axis.
-                OutOfBoundsCanvas.transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
+				//OutOfBoundsCanvas.SetActive(true);
+				// Lock Rotation on X and Z Axis.
+				OutOfBoundsCanvas.transform.rotation = Quaternion.Euler(0, mainCam.transform.rotation.eulerAngles.y, 0);
                 outOfBoundsText.text = "RETURN TO SHIP";
 
                 timer -= Time.deltaTime;
 
                 // If the player is looking left, put the right arrows on.
-                if (player.transform.rotation.eulerAngles.y < 300 && player.transform.rotation.eulerAngles.y >= 180)
+                if (Camera.main.transform.rotation.eulerAngles.y < 300 && mainCam.transform.rotation.eulerAngles.y >= 180)
                 {
                     // Stagger arrow visbility
                     if (timer >= 2f)
@@ -92,7 +95,7 @@ public class OutOfBounds : MonoBehaviour
                     }
                 }
                 // If the player is looking right, put the left arrows on.
-                else //(player.transform.rotation.eulerAngles.y < 300 && player.transform.rotation.eulerAngles.y >= 180)
+                else 
                 {
                     // Stagger arrow visbility
                     if (timer >= 2f)
@@ -127,9 +130,10 @@ public class OutOfBounds : MonoBehaviour
         else
         {
             // Lock Rotation on X and Z Axis.
-            OutOfBoundsCanvas.transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
+            OutOfBoundsCanvas.transform.rotation = Quaternion.Euler(0, mainCam.transform.rotation.eulerAngles.y, 0);
             outOfBoundsText.text = "";
-            arrowOne.GetComponent<Renderer>().enabled = false;
+			OutOfBoundsCanvas.SetActive(false);
+			arrowOne.GetComponent<Renderer>().enabled = false;
             arrowTwo.GetComponent<Renderer>().enabled = false;
             arrowThree.GetComponent<Renderer>().enabled = false;
             arrowFour.GetComponent<Renderer>().enabled = false;
