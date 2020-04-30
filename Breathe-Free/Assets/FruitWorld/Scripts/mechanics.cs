@@ -50,6 +50,7 @@ public class mechanics : MonoBehaviour
     void Start()
     {
 
+        gameOver = false;
 
         oscGameObject = GameObject.Find("OSC");
         oscScript = oscGameObject.GetComponent<OSC>();
@@ -59,6 +60,7 @@ public class mechanics : MonoBehaviour
         inhaleTime = 3;
         exhaleTime = 3;
         numOfCycles = 3;
+        cycleCounter = 0;
 
         stoneHandUpdate = true;
         stoneFruitUpdate = true;
@@ -115,12 +117,12 @@ public class mechanics : MonoBehaviour
 
         ScoreText.GetComponent<Text>().text = "Points: " + score.ToString();
 
-        if (cycleCounter >= numOfCycles)
+        if (cycleCounter == numOfCycles)
 		{
             gameOver = true;
 		}
 
-        if (gameOver)
+        if (!gameOver)
         {
             // inhale
             if (canSummon && Input.GetKey(KeyCode.Space) || OVRInput.Get(OVRInput.RawButton.RIndexTrigger) || flag == 1)
@@ -151,7 +153,6 @@ public class mechanics : MonoBehaviour
                     }
 
                 }
-                cycleCounter++;
 
             }
 
@@ -167,6 +168,8 @@ public class mechanics : MonoBehaviour
                 isMovingTowardsPlayer = false;
 
                 stoneHandUpdate = true;
+
+                cycleCounter++;
             }
 
 
@@ -230,11 +233,12 @@ public class mechanics : MonoBehaviour
             }
 
 
-            // when player stops exhaling before stone hits the fruit
-            //else if (canShoot && flag!=3 && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
-            // For keyboard playability, uncomment else if below and comment out the else if on line 221.
-            //else if (canShoot && !Input.GetKey(KeyCode.D) && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
-            else if (canShoot && flag != 3 && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
+			// when player stops exhaling before stone hits the fruit
+			//else if (canShoot && flag!=3 && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
+			// For keyboard playability, uncomment else if below and comment out the else if on line 221.
+			else if (canShoot && !Input.GetKey(KeyCode.D) && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
+
+			//else if (canShoot && flag != 3 && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
             {
                 stones[count].GetComponent<Rigidbody>().useGravity = true;
                 vfx[count].SetActive(false);
@@ -247,6 +251,8 @@ public class mechanics : MonoBehaviour
                 canShoot = false;
                 stoneHandUpdate = true;
                 stoneFruitUpdate = true;
+
+                cycleCounter++;
 
             }
 
@@ -284,6 +290,8 @@ public class mechanics : MonoBehaviour
                 canSummon = true;
                 stoneHandUpdate = true;
                 stoneFruitUpdate = true;
+
+                cycleCounter++;
 
 
             }
