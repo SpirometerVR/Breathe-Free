@@ -256,7 +256,11 @@ public class mechanics : MonoBehaviour
             s.go.GetComponent<Rigidbody>().isKinematic = false;
             s.go.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
             s.go.GetComponent<Rigidbody>().useGravity = true;
-            fruitCount++;
+
+            ParticleSystem points = s.go.transform.GetChild(1).gameObject.GetComponent<ParticleSystem>();
+            points.Play();
+
+			fruitCount++;
 
             canShoot = false;
             canSummon = true;
