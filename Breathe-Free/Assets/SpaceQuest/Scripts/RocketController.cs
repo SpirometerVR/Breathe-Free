@@ -52,7 +52,7 @@ public class RocketController : MonoBehaviour
     public bool breakIsOn = false;
 
     // Target threshold values for inhale and exhale.
-    private float exhaleThresh = 1500f;
+    private float exhaleThresh = 1480f;
     private float inhaleTresh = 1170f;
     private float steadyThresh = 1340f;
     //private float speedMultiplier = 2f;

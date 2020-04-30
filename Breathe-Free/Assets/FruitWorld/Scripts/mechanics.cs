@@ -59,7 +59,7 @@ public class mechanics : MonoBehaviour
 
         inhaleTime = 3;
         exhaleTime = 3;
-        numOfCycles = 3;
+        numOfCycles = 5;
         cycleCounter = 0;
 
         stoneHandUpdate = true;
@@ -99,7 +99,7 @@ public class mechanics : MonoBehaviour
         {
             flag = 1;
         }
-        else if (breath_value >= 1500)
+        else if (breath_value >= 1480)
         {
             flag = 3;
         }
