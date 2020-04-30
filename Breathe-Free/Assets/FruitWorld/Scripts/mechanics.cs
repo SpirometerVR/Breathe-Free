@@ -15,6 +15,9 @@ public class mechanics : MonoBehaviour
     public static int inhaleTime;
     public static int exhaleTime;
     public static int numOfCycles;
+    public int cycleCounter = 0;
+    public bool gameOver = false;
+    public int score = 0;
 
 
     private bool stoneHandUpdate;                   // aids in calculating the distance of stone-hand just once.
@@ -34,6 +37,7 @@ public class mechanics : MonoBehaviour
     private float stoneFruitDistance;               // for distance between stone and fruit
 
     [SerializeField] private GameObject CanvasText;
+    [SerializeField] private GameObject ScoreText;
     [SerializeField] private List<GameObject> vfx;  // array of particle system attached to stone
     [SerializeField] private GameObject sel;
     [SerializeField] private GameObject myCamera;
@@ -54,6 +58,7 @@ public class mechanics : MonoBehaviour
 
         inhaleTime = 3;
         exhaleTime = 3;
+        numOfCycles = 3;
 
         stoneHandUpdate = true;
         stoneFruitUpdate = true;
@@ -63,6 +68,7 @@ public class mechanics : MonoBehaviour
         stoneFruitDistance = 0;
 
         CanvasText.GetComponent<Text>().text = "Inhale Target Time: " + inhaleTime.ToString();
+        ScoreText.GetComponent<Text>().text = "Points: " + score.ToString();
 
 
 
@@ -107,167 +113,185 @@ public class mechanics : MonoBehaviour
     {
         OVRInput.Update();
 
-        // inhale
-        if (canSummon && Input.GetKey(KeyCode.Space) || OVRInput.Get(OVRInput.RawButton.RIndexTrigger) || flag == 1)
-        {
-            if (count == stones.Count)
-            {
-                Debug.Log("No more stones left");
-            }
-            else
-            {
-                cont = stones[count].GetComponent<ParabolaController>();
-                isMovingTowardsPlayer = true;
-				//vfx[count].transform.GetChild(0).gameObject.SetActive(false);
+        ScoreText.GetComponent<Text>().text = "Points: " + score.ToString();
 
-				if (stoneHandUpdate)
-                {
-                    CanvasText.GetComponent<Text>().text = "Inhale Target Time: " + inhaleTime.ToString();
-                    coroutineInhale = StartCoroutine(countDownInhale(inhaleTime));
-
-                    stoneHandDistance = Vector3.Distance(stones[count].transform.position, transform.position);
-                    stoneHandDistance -= 0.4f;
-                    stoneHandUpdate = false;
-                }
-                if (Vector3.Distance(stones[count].transform.position, transform.position) > 0.45f)
-                {
-                    stones[count].transform.position = Vector3.MoveTowards(stones[count].transform.position, transform.position + transform.forward * 0.4f - transform.up * 0.1f, Time.deltaTime * (stoneHandDistance / inhaleTime));
-
-                }
-
-            }
-
-        }
-
-        // called if player stops inhaling before stone reaches the player
-
-        //else if (move && flag!=1 && Vector3.Distance(stones[count].transform.position, transform.position) > 0.2f)
-        else if (isMovingTowardsPlayer && !Input.GetKey(KeyCode.Space) && Vector3.Distance(stones[count].transform.position, transform.position) > 0.45f)
-        {
-            stones[count].GetComponent<Rigidbody>().useGravity = true;
-            StopCoroutine(coroutineInhale);
-            //vfx[count].SetActive(false);
-            count++;
-            isMovingTowardsPlayer = false;
-
-            stoneHandUpdate = true;
-        }
-
-
-        // for the stone to always be in front of the camera
-        if (Vector3.Distance(stones[count].transform.position, this.transform.position) <= 0.45f)
-        {
-            stones[count].transform.position = transform.position + transform.forward * 0.4f - transform.up * 0.1f;
-
-            //stones[count].transform.rotation = new Quaternion(0.0f, transform.rotation.y, 0.0f, transform.rotation.w);
-        }
-
-
-        // When stone has arrived
-        if ((Input.GetKey(KeyCode.D) || OVRInput.Get(OVRInput.RawButton.A) || flag == 3) && Vector3.Distance(stones[count].transform.position, this.transform.position) <= 0.45f && fruitCount < fru.Count && s.stay)
-        {
-
-			vfx[count].SetActive(true);
-			//vfx[count].transform.GetChild(0).gameObject.SetActive(true);
-
-            isMovingTowardsPlayer = false;
-            canShoot = true;
-            canSummon = false;
-
-            GameObject.Find("Trails").GetComponent<ParticleSystem>().Play();
-            GameObject point1 = new GameObject();
-            GameObject point2 = new GameObject();
-            GameObject point3 = new GameObject();
-            GameObject root = new GameObject();
-            point1.name = "child1";
-            point2.name = "child2";
-            point3.name = "child3";
-            root.name = "parent";
-            point1.transform.parent = root.transform;
-            point2.transform.parent = root.transform;
-            point3.transform.parent = root.transform;
-            point1.transform.position = stones[count].transform.position;
-            point3.transform.position = s.go.transform.position;
-            point2.transform.position = new Vector3((point1.transform.position.x + point3.transform.position.x) / 2, point3.transform.position.y + 0.3f, (point1.transform.position.z + point3.transform.position.z) / 2);
-
-
-
-            if (!cont.enabled)
-            {
-                cont.enabled = true;
-            }
-            if (stoneFruitUpdate)
-            {
-                CanvasText.GetComponent<Text>().text = "Exhale Target Time: " + exhaleTime.ToString();
-                coroutineExhale = StartCoroutine(countDownExhale(exhaleTime));
-
-                stoneFruitDistance = Vector3.Distance(stones[count].transform.position, s.go.transform.position);
-                stoneFruitDistance -= 1f;
-                cont.Speed = stoneFruitDistance / exhaleTime;
-
-                stoneFruitUpdate = false;
-            }
-            cont.ParabolaRoot = root;
-            cont.Autostart = true;
-            cont.Animation = true;
-            cont.Speed = stoneFruitDistance / exhaleTime;
-        }
-
-
-		// when player stops exhaling before stone hits the fruit
-		//else if (canShoot && flag!=3 && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
-		// For keyboard playability, uncomment else if below and comment out the else if on line 221.
-		//else if (canShoot && !Input.GetKey(KeyCode.D) && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
-		else if (canShoot && flag != 3 && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
+        if (cycleCounter >= numOfCycles)
 		{
-            stones[count].GetComponent<Rigidbody>().useGravity = true;
-            vfx[count].SetActive(false);
-            count++;
-            StopCoroutine(coroutineExhale);
+            gameOver = true;
+		}
 
-
-            cont.enabled = false;
-            canSummon = true;
-            canShoot = false;
-            stoneHandUpdate = true;
-            stoneFruitUpdate = true;
-
-        }
-
-
-        //When stone has hit the fruit
-        if (s.go && count < stones.Count && stones[count] && Vector3.Distance(stones[count].transform.position, s.go.transform.position) < 1f && fruitCount < fru.Count)
+        if (gameOver)
         {
-            var particleEffect = stones[count].transform.GetChild(0);
-            stones[count].transform.GetChild(0).transform.parent = null;
-
-            stones[count].GetComponent<Rigidbody>().useGravity = true;
-            playPluck = true;
-            CanvasText.GetComponent<Text>().text = "Inhale Target Time: " + inhaleTime.ToString();
-            Destroy(stones[count]);
-            //toDestory.Add(vfx[count]);
-            for (int i = 0; i < 3; i++)
+            // inhale
+            if (canSummon && Input.GetKey(KeyCode.Space) || OVRInput.Get(OVRInput.RawButton.RIndexTrigger) || flag == 1)
             {
-                GameObject.Find("stoneVFX").transform.GetChild(i).gameObject.GetComponent<ParticleSystem>().Stop();
+                if (count == stones.Count)
+                {
+                    Debug.Log("No more stones left");
+                }
+                else
+                {
+                    cont = stones[count].GetComponent<ParabolaController>();
+                    isMovingTowardsPlayer = true;
+                    //vfx[count].transform.GetChild(0).gameObject.SetActive(false);
+
+                    if (stoneHandUpdate)
+                    {
+                        CanvasText.GetComponent<Text>().text = "Inhale Target Time: " + inhaleTime.ToString();
+                        coroutineInhale = StartCoroutine(countDownInhale(inhaleTime));
+
+                        stoneHandDistance = Vector3.Distance(stones[count].transform.position, transform.position);
+                        stoneHandDistance -= 0.4f;
+                        stoneHandUpdate = false;
+                    }
+                    if (Vector3.Distance(stones[count].transform.position, transform.position) > 0.45f)
+                    {
+                        stones[count].transform.position = Vector3.MoveTowards(stones[count].transform.position, transform.position + transform.forward * 0.4f - transform.up * 0.1f, Time.deltaTime * (stoneHandDistance / inhaleTime));
+
+                    }
+
+                }
+                cycleCounter++;
+
             }
-            StartCoroutine(destory(vfx[count]));
-            count++;
-            s.go.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-            s.go.GetComponent<Rigidbody>().isKinematic = false;
-            s.go.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-            s.go.GetComponent<Rigidbody>().useGravity = true;
 
-            ParticleSystem points = s.go.transform.GetChild(1).gameObject.GetComponent<ParticleSystem>();
-            points.Play();
+            // called if player stops inhaling before stone reaches the player
 
-			fruitCount++;
+            //else if (move && flag!=1 && Vector3.Distance(stones[count].transform.position, transform.position) > 0.2f)
+            else if (isMovingTowardsPlayer && !Input.GetKey(KeyCode.Space) && Vector3.Distance(stones[count].transform.position, transform.position) > 0.45f)
+            {
+                stones[count].GetComponent<Rigidbody>().useGravity = true;
+                StopCoroutine(coroutineInhale);
+                //vfx[count].SetActive(false);
+                count++;
+                isMovingTowardsPlayer = false;
 
-            canShoot = false;
-            canSummon = true;
-            stoneHandUpdate = true;
-            stoneFruitUpdate = true;
+                stoneHandUpdate = true;
+            }
 
 
+            // for the stone to always be in front of the camera
+            if (Vector3.Distance(stones[count].transform.position, this.transform.position) <= 0.45f)
+            {
+                stones[count].transform.position = transform.position + transform.forward * 0.4f - transform.up * 0.1f;
+
+                //stones[count].transform.rotation = new Quaternion(0.0f, transform.rotation.y, 0.0f, transform.rotation.w);
+            }
+
+
+            // When stone has arrived
+            if ((Input.GetKey(KeyCode.D) || OVRInput.Get(OVRInput.RawButton.A) || flag == 3) && Vector3.Distance(stones[count].transform.position, this.transform.position) <= 0.45f && fruitCount < fru.Count && s.stay)
+            {
+
+                vfx[count].SetActive(true);
+                //vfx[count].transform.GetChild(0).gameObject.SetActive(true);
+
+                isMovingTowardsPlayer = false;
+                canShoot = true;
+                canSummon = false;
+
+                GameObject.Find("Trails").GetComponent<ParticleSystem>().Play();
+                GameObject point1 = new GameObject();
+                GameObject point2 = new GameObject();
+                GameObject point3 = new GameObject();
+                GameObject root = new GameObject();
+                point1.name = "child1";
+                point2.name = "child2";
+                point3.name = "child3";
+                root.name = "parent";
+                point1.transform.parent = root.transform;
+                point2.transform.parent = root.transform;
+                point3.transform.parent = root.transform;
+                point1.transform.position = stones[count].transform.position;
+                point3.transform.position = s.go.transform.position;
+                point2.transform.position = new Vector3((point1.transform.position.x + point3.transform.position.x) / 2, point3.transform.position.y + 0.3f, (point1.transform.position.z + point3.transform.position.z) / 2);
+
+
+
+                if (!cont.enabled)
+                {
+                    cont.enabled = true;
+                }
+                if (stoneFruitUpdate)
+                {
+                    CanvasText.GetComponent<Text>().text = "Exhale Target Time: " + exhaleTime.ToString();
+                    coroutineExhale = StartCoroutine(countDownExhale(exhaleTime));
+
+                    stoneFruitDistance = Vector3.Distance(stones[count].transform.position, s.go.transform.position);
+                    stoneFruitDistance -= 1f;
+                    cont.Speed = stoneFruitDistance / exhaleTime;
+
+                    stoneFruitUpdate = false;
+                }
+                cont.ParabolaRoot = root;
+                cont.Autostart = true;
+                cont.Animation = true;
+                cont.Speed = stoneFruitDistance / exhaleTime;
+            }
+
+
+            // when player stops exhaling before stone hits the fruit
+            //else if (canShoot && flag!=3 && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
+            // For keyboard playability, uncomment else if below and comment out the else if on line 221.
+            //else if (canShoot && !Input.GetKey(KeyCode.D) && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
+            else if (canShoot && flag != 3 && Vector3.Distance(stones[count].transform.position, transform.position) >= 1f)
+            {
+                stones[count].GetComponent<Rigidbody>().useGravity = true;
+                vfx[count].SetActive(false);
+                count++;
+                StopCoroutine(coroutineExhale);
+
+
+                cont.enabled = false;
+                canSummon = true;
+                canShoot = false;
+                stoneHandUpdate = true;
+                stoneFruitUpdate = true;
+
+            }
+
+
+            //When stone has hit the fruit
+            if (s.go && count < stones.Count && stones[count] && Vector3.Distance(stones[count].transform.position, s.go.transform.position) < 1f && fruitCount < fru.Count)
+            {
+                var particleEffect = stones[count].transform.GetChild(0);
+                stones[count].transform.GetChild(0).transform.parent = null;
+
+                stones[count].GetComponent<Rigidbody>().useGravity = true;
+                playPluck = true;
+                CanvasText.GetComponent<Text>().text = "Inhale Target Time: " + inhaleTime.ToString();
+                Destroy(stones[count]);
+                //toDestory.Add(vfx[count]);
+                for (int i = 0; i < 3; i++)
+                {
+                    GameObject.Find("stoneVFX").transform.GetChild(i).gameObject.GetComponent<ParticleSystem>().Stop();
+                }
+                StartCoroutine(destory(vfx[count]));
+                count++;
+                s.go.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+                s.go.GetComponent<Rigidbody>().isKinematic = false;
+                s.go.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+                s.go.GetComponent<Rigidbody>().useGravity = true;
+
+                ParticleSystem points = s.go.transform.GetChild(1).gameObject.GetComponent<ParticleSystem>();
+                points.Play();
+
+                score += 5;
+
+                fruitCount++;
+
+                canShoot = false;
+                canSummon = true;
+                stoneHandUpdate = true;
+                stoneFruitUpdate = true;
+
+
+            }
+        }
+		else
+        {
+            ScoreText.GetComponent<Text>().text = "";
+            CanvasText.GetComponent<Text>().text = "Final Score: " + score + "/" + (numOfCycles * 5);
         }
 
     }
