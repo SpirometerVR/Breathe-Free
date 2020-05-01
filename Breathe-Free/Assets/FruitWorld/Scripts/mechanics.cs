@@ -339,7 +339,7 @@ public class mechanics : MonoBehaviour
                     countScr++;
 
                     //Debug.Log(currentScore.score.ToString());
-                    topRankList.text += count + "\n";
+                    topRankList.text += countScr + "\n";
                     topScoreList.text += currentScore.score.ToString() + "%\n";
                     topNameList.text += currentScore.playerName.Replace("+", " ") + "\n";
 
