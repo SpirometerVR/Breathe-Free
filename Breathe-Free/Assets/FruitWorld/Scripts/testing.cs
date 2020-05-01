@@ -149,9 +149,11 @@ public class testing : MonoBehaviour
         mechanics.inhaleTime = inhaleTime;
         mechanics.exhaleTime = exhaleTime;
         mechanics.numOfCycles = numOfCycles;
+        mechanics.userName = username;
         RocketController.inhaleTargetTime = inhaleTime;
         RocketController.exhaleTargetTime = exhaleTime;
         RocketController.cycles = numOfCycles;
+        RocketController.userName = username;
 
 
         if (game.name == "FruitWorldButton")

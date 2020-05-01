@@ -20,6 +20,7 @@ public class RocketController : MonoBehaviour
     // Public target times can be adjusted by doctor/patient.
     public static float exhaleTargetTime = 3f;
     public static float inhaleTargetTime = 3f;
+    public static string userName;
     public float exhaleDuration;
     public float inhaleDuration;
 	public float breakDuration;
@@ -158,7 +159,7 @@ public class RocketController : MonoBehaviour
             if (sqLeaderBoard.publicCode == "") Debug.LogError("You forgot to set the publicCode variable");
             if (sqLeaderBoard.privateCode == "") Debug.LogError("You forgot to set the privateCode variable");
 
-            sqLeaderBoard.AddScore("Trojan_Test", (int)(100 * diamondScores.diamondScore / diamondScores.totalDiamonds));
+            sqLeaderBoard.AddScore(userName, (int)(100 * diamondScores.diamondScore / diamondScores.totalDiamonds));
             Debug.Log("...Add Score");
 
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, Camera.main.transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);

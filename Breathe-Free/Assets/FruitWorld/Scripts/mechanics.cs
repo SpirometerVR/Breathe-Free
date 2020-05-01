@@ -12,9 +12,9 @@ public class mechanics : MonoBehaviour
     public bool playPluck = false;                  // wether or not to play the pluck sound
     public List<GameObject> stones;                 // all the stones
     public List<GameObject> fru;                    // all the fruits
-    public static int inhaleTime;
-    public static int exhaleTime;
-    public static int numOfCycles;
+    public static int inhaleTime = 3;
+    public static int exhaleTime = 3;
+    public static int numOfCycles = 1;
     public static string userName;
     public int cycleCounter = 0;
     public bool gameOver = false;
@@ -22,6 +22,7 @@ public class mechanics : MonoBehaviour
 
     // For scoreboard;
     public GameObject leader;
+    public GameObject ovrGazePointer;
     dreamloLeaderBoard fwLeaderBoard;
     private bool topScoresReceived = false;
     private Text topNameList;
@@ -66,13 +67,16 @@ public class mechanics : MonoBehaviour
         oscScript.SetAddressHandler("/Spirometer/C", BreathData);
         s = sel.GetComponent<select>();
 
-        inhaleTime = 3;
-        exhaleTime = 3;
-        numOfCycles = 5;
+        //inhaleTime = 3;
+        //exhaleTime = 3;
+        //numOfCycles = 5;
         cycleCounter = 0;
 
         stoneHandUpdate = true;
         stoneFruitUpdate = true;
+
+        this.fwLeaderBoard = dreamloLeaderBoard.GetSceneDreamloLeaderboard();
+        ovrGazePointer = GameObject.FindGameObjectWithTag("OVRGazePointer");
 
         topNameList = GameObject.Find("Top Names List").GetComponent<Text>();
         topScoreList = GameObject.Find("Top Scores List").GetComponent<Text>();
@@ -138,6 +142,7 @@ public class mechanics : MonoBehaviour
         if (!gameOver)
         {
             leader.SetActive(false);
+            ovrGazePointer.SetActive(false);
             // inhale
             if (canSummon && Input.GetKey(KeyCode.Space) || OVRInput.Get(OVRInput.RawButton.RIndexTrigger) || flag == 1)
             {
@@ -316,6 +321,7 @@ public class mechanics : MonoBehaviour
             FinalScoreText.GetComponent<Text>().text = "Final Score: " + score + "/" + (numOfCycles * 5);
 
             leader.SetActive(true);
+            ovrGazePointer.SetActive(true);
 
             if (fwLeaderBoard.publicCode == "") Debug.LogError("You forgot to set the publicCode variable");
             if (fwLeaderBoard.privateCode == "") Debug.LogError("You forgot to set the privateCode variable");
