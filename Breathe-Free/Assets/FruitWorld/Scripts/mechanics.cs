@@ -22,7 +22,6 @@ public class mechanics : MonoBehaviour
 
     // For scoreboard;
     public GameObject leader;
-    public GameObject ovrGazePointer;
     dreamloLeaderBoard fwLeaderBoard;
     private bool topScoresReceived = false;
     private Text topNameList;
@@ -76,7 +75,6 @@ public class mechanics : MonoBehaviour
         stoneFruitUpdate = true;
 
         this.fwLeaderBoard = dreamloLeaderBoard.GetSceneDreamloLeaderboard();
-        ovrGazePointer = GameObject.FindGameObjectWithTag("OVRGazePointer");
 
         topNameList = GameObject.Find("Top Names List").GetComponent<Text>();
         topScoreList = GameObject.Find("Top Scores List").GetComponent<Text>();
@@ -142,7 +140,6 @@ public class mechanics : MonoBehaviour
         if (!gameOver)
         {
             leader.SetActive(false);
-            ovrGazePointer.SetActive(false);
             // inhale
             if (canSummon && Input.GetKey(KeyCode.Space) || OVRInput.Get(OVRInput.RawButton.RIndexTrigger) || flag == 1)
             {
@@ -321,7 +318,6 @@ public class mechanics : MonoBehaviour
             FinalScoreText.GetComponent<Text>().text = "Final Score: " + score + "/" + (numOfCycles * 5);
 
             leader.SetActive(true);
-            ovrGazePointer.SetActive(true);
 
             if (fwLeaderBoard.publicCode == "") Debug.LogError("You forgot to set the publicCode variable");
             if (fwLeaderBoard.privateCode == "") Debug.LogError("You forgot to set the privateCode variable");
