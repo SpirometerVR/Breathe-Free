@@ -10,7 +10,7 @@ public class particleEffectScript : MonoBehaviour
     void Start()
     {
 
-        
+
     }
 
     // Update is called once per frame
@@ -22,8 +22,8 @@ public class particleEffectScript : MonoBehaviour
     {
         if (collision.collider.CompareTag("fruits"))
         {
-            Debug.Log(collision.collider.GetComponent<Renderer>().material.name+ "name");
-            if(collision.collider.gameObject.GetComponent<Renderer>().material.name=="redMat (Instance)")
+            Debug.Log(collision.collider.GetComponent<Renderer>().material.name + "name");
+            if (collision.collider.gameObject.GetComponent<Renderer>().material.name == "redMat (Instance)")
             {
                 Debug.Log("Red");
                 Instantiate(psRed, collision.collider.transform.position, Quaternion.Euler(-90f, 0, 0));

@@ -41,11 +41,11 @@ public class pauseMenu : MonoBehaviour
     {
         pauseMenuUI.SetActive(true);
         //audio.audio[0].Pause();
-        
+
         Time.timeScale = 0f;
         isPaused = true;
 
-        
+
     }
     public void QuitGame()
     {

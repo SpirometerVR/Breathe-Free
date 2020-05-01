@@ -1,32 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RocketController : MonoBehaviour
 {
+    // Adjusted all private GameObjects & Script Objects to be Public due to Private access errors.
+
     // Flags for exhale and inhale phases.
     public bool exhalePhase = false;
     public bool inhalePhase = true;
 
     public GameObject miniDiamond;
     public GameObject miniDiamondTwo;
+    public GameObject engineLight;
 
-    public bool inBounds;
+    public bool inBounds = true;
 
     // Public target times can be adjusted by doctor/patient.
-    public float exhaleTargetTime = 1f;
-    public float inhaleTargetTime = 1f;
+    public static float exhaleTargetTime = 3f;
+    public static float inhaleTargetTime = 3f;
+    public static string userName;
     public float exhaleDuration;
     public float inhaleDuration;
 	public float breakDuration;
 
 	// Public cycles variable can be adjusted by doctor/patient.
-	public float cycles = 5f;
+	public static float cycles = 5f;
     public float cycleCounter = 0f;
     public bool gameOver = false;
+    public bool submitNewScore = true;
 
     // Debugging the spirometer
-    public float speed;
+    //public float speed;
 
     // Music that will be played when items are collected.
     public AudioClip diamond;
@@ -40,30 +46,56 @@ public class RocketController : MonoBehaviour
 	private float exhaleStart = 0f;
     private float inhaleStart = 0f;
 	private float breakStart = 0f;
+    private float tempInhale = 0f;
 
-	public bool exhaleIsOn = false;
+    public bool exhaleIsOn = false;
     public bool inhaleIsOn = false;
     public bool breakIsOn = false;
 
     // Target threshold values for inhale and exhale.
-    private float exhaleThresh = 1470f;
-    private float inhaleTresh = 1200f;
+    private float exhaleThresh = 1480f;
+    private float inhaleTresh = 1170f;
     private float steadyThresh = 1340f;
-    private float speedMultiplier = 4f;
+    //private float speedMultiplier = 2f;
+	//private float speedForceMultiplier = 4f;
+	private float speedMultiplier = 200;
 
-    private AudioSource audio;
-    private Renderer gameRocket;
+	public AudioSource audio;
+    public Renderer gameRocket;
 
     // Create GameObject to find OSC
-    private GameObject OSC;
+    public GameObject OSC;
     // Hold OSC data in spirometer object
-    private OSC spirometer;
+    public OSC spirometer;
     // Get the rocket as a rigidbody
-    private Rigidbody rocketBody;
+    public Rigidbody rocketBody;
 
-    private ScoreBoard diamondScores;
-    private ScoreBoard finalScores;
-    private ScoreBoard spedometer;
+    public ScoreBoard diamondScores;
+    public ScoreBoard finalScores;
+    //public ScoreBoard spedometer;
+
+    public GameObject leaderBoard;
+    public GameObject ovrGazePointer;
+
+    public BreathObjectGenerator breathGen;
+
+    // Reference to the dreamloLeaderboard prefab in the scene
+    dreamloLeaderBoard sqLeaderBoard;
+    private bool topScoresReceived = false;
+    private Text topNameList;
+    private Text topScoreList;
+    private Text topRankList;
+
+    enum gameState
+    {
+        waiting,
+        running,
+        enterscore,
+        leaderboard,
+        gameOver
+    };
+
+    gameState gState;
 
     // Start is called before the first frame update
     void Start()
@@ -79,34 +111,92 @@ public class RocketController : MonoBehaviour
         gameRocket.enabled = true;
 
         // Get rigid body and audio components for the rocket.
-        rocketBody = GetComponent<Rigidbody>();
         audio = GetComponent<AudioSource>();
 
         // Find the score board objects for each respective scoreboard.
         diamondScores = GameObject.FindGameObjectWithTag("Diamond Score").GetComponent<ScoreBoard>();
         finalScores = GameObject.FindGameObjectWithTag("Final Score").GetComponent<ScoreBoard>();
-		spedometer = GameObject.FindGameObjectWithTag("Spedometer").GetComponent<ScoreBoard>();
+        //spedometer = GameObject.FindGameObjectWithTag("Spedometer").GetComponent<ScoreBoard>();
+        topNameList = GameObject.Find("Top Names List").GetComponent<Text>();
+        topScoreList = GameObject.Find("Top Scores List").GetComponent<Text>();
+        topRankList = GameObject.Find("Top Ranks List").GetComponent<Text>();
 
-		// Manually set inhale phase to true at start of game.
-		inhalePhase = true;
+        // Manually set inhale phase to true at start of game.
+        inhalePhase = true;
+
+        // get the reference here...
+        this.sqLeaderBoard = dreamloLeaderBoard.GetSceneDreamloLeaderboard();
+        leaderBoard = GameObject.FindGameObjectWithTag("Leader Board");
+        ovrGazePointer = GameObject.FindGameObjectWithTag("OVRGazePointer");
+        leaderBoard.SetActive(false);
+        ovrGazePointer.SetActive(false);
+
+        this.gState = gameState.running;
     }
 
     // Update is called once per frame.     
-    void Update() {}
+    void Update() {
+        if (cycleCounter > cycles && gState == gameState.running)
+        {
+            Debug.Log("...cycle counter");
+            this.gState = gameState.gameOver;
+            gameOver = true;
+        }
+    }
 
     // Place general movement in FixedUpdate to avoid shaking.
     private void FixedUpdate()
     {
         // Once the player has completed the number of cycles, set gameOver to true and destroy all existing gameObjects.
-        if (cycleCounter > cycles)
+        if (gState == gameState.gameOver)
         {
-            gameOver = true;
+            Debug.Log("...game over");
+
+            // display the leader board
+            leaderBoard.SetActive(true);
+            ovrGazePointer.SetActive(true);
+
+            if (sqLeaderBoard.publicCode == "") Debug.LogError("You forgot to set the publicCode variable");
+            if (sqLeaderBoard.privateCode == "") Debug.LogError("You forgot to set the privateCode variable");
+
+            sqLeaderBoard.AddScore(userName, (int)(100 * diamondScores.diamondScore / diamondScores.totalDiamonds));
+            Debug.Log("...Add Score");
+
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, Camera.main.transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+
             Destroy(GameObject.FindGameObjectWithTag("Right Fuel"));
             Destroy(GameObject.FindGameObjectWithTag("Left Fuel"));
             Destroy(GameObject.FindGameObjectWithTag("Middle Fuel"));
+            Destroy(GameObject.FindGameObjectWithTag("Fuel"));
+
+            List<dreamloLeaderBoard.Score> scoreList = sqLeaderBoard.ToListHighToLow();
+
+            if (scoreList == null)
+            {
+                Debug.Log("(loading...)");
+            }
+            else
+            {
+                int maxToDisplay = 6;
+                int count = 0;
+                foreach (dreamloLeaderBoard.Score currentScore in scoreList)
+                {
+                    count++;
+                    
+                    //Debug.Log(currentScore.score.ToString());
+                    topRankList.text += count + "\n";
+                    topScoreList.text += currentScore.score.ToString() + "%\n";
+                    topNameList.text += currentScore.playerName.Replace("+", " ") + "\n";
+
+                    if (count >= maxToDisplay) break;
+                }
+
+                if (count > 0) { this.gState = gameState.waiting; }
+            }
         }
+
         // Otherwise, if the game is not over:
-        if (!gameOver)
+        if (gState == gameState.running)
         {
 			// Unfreeze restrictions so that ship moves normally when not in collision mode.
 			rocketBody.constraints = RigidbodyConstraints.None;
@@ -117,8 +207,9 @@ public class RocketController : MonoBehaviour
 			transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, Camera.main.transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
             Vector3 cameraVector = new Vector3(Camera.main.transform.forward.x, 0, Camera.main.transform.forward.z);
 
-            // Accelerate rocket when player is exhaling or using upArrow input.
-            if (exhalePhase && cameraBounds())
+			// Accelerate rocket when player is exhaling or using upArrow input.
+			// Only allow exhale for as long as previous cycle was inhaled as soon as diamonds spawn.
+			if (exhalePhase && cameraBounds() && exhaleDuration <= tempInhale && breathGen.exhaleSpawned)
             {
                 if (exhaleIsOn || Input.GetKey(KeyCode.UpArrow))
                 {
@@ -130,25 +221,37 @@ public class RocketController : MonoBehaviour
                     // reset inhaleDuration timer.
                     inhaleDuration = 0;
 					breakDuration = 0;
-					// Start timer to determine how long the breath is exhaled.
-					downTime = Time.time;
+                    // Start timer to determine how long the breath is exhaled.
+                    downTime = Time.time;
                     // Use transform.translate so that space ship does not stop on collisions.
-                    transform.Translate(new Vector3(cameraVector.x, 0, cameraVector.z) * 300 * Time.deltaTime);
-                    //rocketBody.AddRelativeForce(new Vector3(cameraVector.x, 0, cameraVector.z) * speedMultiplier, ForceMode.VelocityChange);
+                    transform.Translate(new Vector3(cameraVector.x, 0, cameraVector.z) * speedMultiplier * Time.deltaTime);
                     // Determine how long the exhale is or how long upArrow is being held down for.
                     exhaleDuration = downTime - exhaleStart;
-					// Start counting the break time
-					breakStart = Time.time;
+                    // Start counting the break time
+                    breakStart = Time.time;
 				}
 
 				//TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF STATEMENT BELOW:
-				if (!Input.GetKey(KeyCode.UpArrow))
-				{
-					exhaleIsOn = false;
-				}
+				//if (!Input.GetKey(KeyCode.UpArrow))
+				//{
+				//	exhaleIsOn = false;
+				//}
 			}
 
-            if (inhalePhase && cameraBounds())
+            if(exhaleDuration > tempInhale)
+            {
+                // Reset all of the flags.
+                exhalePhase = false;
+                inhalePhase = true;
+                exhaleDuration = 0;
+                inhaleDuration = 0;
+                breakDuration = 0;
+                exhaleIsOn = false;
+                inhaleIsOn = false;
+                breakIsOn = true;
+            }
+
+            if (inhalePhase && cameraBounds() && breathGen.inhaleSpawned)
             {
                 // Pull fuel towards the rocket when inhaling or using Space key.
                 if (inhaleIsOn ||  Input.GetKey(KeyCode.Space))
@@ -167,13 +270,15 @@ public class RocketController : MonoBehaviour
                     inhaleDuration = upTime - inhaleStart;
 					// Start counting the break time
 					breakStart = Time.time;
+                    // Set tempInhale to be the time inhaled.
+                    tempInhale = inhaleDuration;
                 }
 
 				//TO ALLOW KEY BOARD PLAYABILITY, UNCOMMENT IF LOOP BELOW:
-				if (!Input.GetKey(KeyCode.Space))
-				{
-					inhaleIsOn = false;
-				}
+				//if (!Input.GetKey(KeyCode.Space))
+				//{
+				//	inhaleIsOn = false;
+				//}
 			}
 
             // If the player is neither exhaling nor inhaling:
@@ -197,7 +302,7 @@ public class RocketController : MonoBehaviour
                     // Let the spaceship float for a duration of time. Do not do this on start cycle.
                     if (breakDuration <= 0.3f && exhaleDuration > 0)
                     {
-                        rocketBody.AddRelativeForce(new Vector3(cameraVector.x, 0, cameraVector.z) * 4f, ForceMode.VelocityChange);
+                        rocketBody.AddRelativeForce(new Vector3(cameraVector.x, 0, cameraVector.z) * 4.5f, ForceMode.VelocityChange);
                     }
                     // Negate the force added to the rocket via exhalation.
                     else
@@ -205,7 +310,6 @@ public class RocketController : MonoBehaviour
                         var oppositeDirX = -rocketBody.velocity;
                         rocketBody.AddForce(oppositeDirX);
                     }
-
                     // Only count exhale and inhales that are longer than 0.3 second to remove erroneous air flow data.
                     // Once inhale or exhale is conducted and completed, switch cycles.
                     if (inhalePhase && inhaleDuration >= 0.3)
@@ -267,9 +371,24 @@ public class RocketController : MonoBehaviour
     private void ReceiveSpirometerData(OscMessage message)
     {
         float breathVal = message.GetFloat(0);
-		// Debugging purposes.
-		speed = breathVal;
-		Debug.Log(transform.rotation.eulerAngles.y);
+        // Debugging purposes.
+        //speed = breathVal;
+        Debug.Log(breathVal);
+        // Turn on engine light if the spirometer is connected.
+        if(breathVal > 0)
+        {
+            MeshRenderer engineRenderer = engineLight.GetComponent<MeshRenderer>();
+            Material newColor = (Material)Resources.Load("Materials-SQ/Green - SQ", typeof(Material));
+            engineRenderer.material = newColor;
+        }
+        // Turn engine light off if spirometer is not connected.
+        else
+        {
+            MeshRenderer engineRenderer = engineLight.GetComponent<MeshRenderer>();
+            Material newColor = (Material)Resources.Load("Materials-SQ/Red - SQ", typeof(Material));
+            engineRenderer.material = newColor;
+        }
+		Debug.Log(breathVal);
 
         if (breathVal >= exhaleThresh)
         {
@@ -299,34 +418,38 @@ public class RocketController : MonoBehaviour
         // If it collides with a diamond.
         if (other.gameObject.CompareTag("Diamond") || other.gameObject.CompareTag("Diamond Two"))
         {
-            if (exhalePhase)
-            {
-                // Add constraints so that ship does not float randomly on collision
-                rocketBody.constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionX;
-				rocketBody.isKinematic = true;
-				transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
+            // Add constraints so that ship does not float randomly on collision
+            rocketBody.constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionX;
+			rocketBody.isKinematic = true;
+			transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
 
-                Destroy(other.gameObject);
-                audio.PlayOneShot(diamond, 5f);
+            //Destroy(other.gameObject.);
+            Destroy(other.gameObject);
+            audio.PlayOneShot(diamond, 5f);
 
-                // Create mini diamonds for score UI. See DiamondController for controller script.
-                Instantiate(miniDiamond, new Vector3(transform.position.x, transform.position.y + 10, transform.position.z), Quaternion.Euler(90, 180, 0));
+            // Create mini diamonds for score UI. See DiamondController for controller script.
+            Instantiate(miniDiamond, new Vector3(transform.position.x, transform.position.y + 10, transform.position.z), Quaternion.Euler(90, 180, 0));
 
-                // Update all instances of diamondScore so there is data consistency
-                finalScores.diamondScore += 1;
-                spedometer.diamondScore += 1;
-            }
+            // Update all instances of diamondScore so there is data consistency
+            finalScores.diamondScore += 1;
+            //spedometer.diamondScore += 1;
         }
         // If it collides with fuel.
         else if (other.gameObject.CompareTag("Fuel"))
         {
-            if (inhalePhase)
-            {
-                // Add constraints so that ship does not float randomly on collision
-                rocketBody.constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionX;
-				rocketBody.isKinematic = true;
-				transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
-            }
+            // Add constraints so that ship does not float randomly on collision
+            rocketBody.constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionX;
+			rocketBody.isKinematic = true;
+			transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
+        }
+        // Destroy rigidBody within Diamonds so as not to cause physics issues.
+        else if (other.gameObject.CompareTag("Asteroid Destroyer"))
+        {
+            Destroy(other.gameObject);
+        }
+        else if (other.gameObject.CompareTag("Engine Light"))
+        {
+            // Do  nothing on collision with Engine Light.
         }
         // If it collides with any other object.
         else
@@ -354,15 +477,18 @@ public class RocketController : MonoBehaviour
     private IEnumerator BlinkTime(float blinkDuration)
     {
         float timeCounter = 0;
+        MeshRenderer engineRenderer = engineLight.GetComponent<MeshRenderer>();
         while (timeCounter < blinkDuration)
         {
             // make the rocket blink off and on.
             gameRocket.enabled = !gameRocket.enabled;
+            engineRenderer.enabled = !engineRenderer.enabled;
             //wait 0.3 seconds per interval
             yield return new WaitForSeconds(0.3f);
             timeCounter += (1f / 3f);
         }
         gameRocket.enabled = true;
+        engineRenderer.enabled = true;
     }
 
 	// Only allow player to play when looking in the forward direction.

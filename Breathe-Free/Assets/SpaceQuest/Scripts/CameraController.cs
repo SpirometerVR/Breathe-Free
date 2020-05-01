@@ -7,12 +7,12 @@ public class CameraController : MonoBehaviour
 {
     public GameObject player;
     // Regular offset for camera.
-    private static Vector3 offset = new Vector3(0f, 38f, -54f);
+    private static Vector3 offset = new Vector3(0f, 34.3f, -87.5f);
     // Offset when player is exhaling to simulate acceleration.
     private Vector3 zoomOffset = Vector3.Scale(offset, new Vector3(0f, 1.2f, 1.7f));
 
     private float speed = 10f;
-    private RocketController playerScript;
+    public RocketController playerScript;
 
     Camera mainCamera;
     private int zoom = 75;

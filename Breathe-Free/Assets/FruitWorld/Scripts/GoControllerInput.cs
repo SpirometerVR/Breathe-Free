@@ -7,7 +7,7 @@ public class GoControllerInput : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -15,8 +15,8 @@ public class GoControllerInput : MonoBehaviour
     {
         OVRInput.Update();
 
-        if(OVRInput.IsControllerConnected(OVRInput.Controller.RTrackedRemote))
-		{
+        if (OVRInput.IsControllerConnected(OVRInput.Controller.RTrackedRemote))
+        {
             if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger))
             {
                 print("okay");
@@ -24,6 +24,6 @@ public class GoControllerInput : MonoBehaviour
             }
         }
 
-        
+
     }
 }

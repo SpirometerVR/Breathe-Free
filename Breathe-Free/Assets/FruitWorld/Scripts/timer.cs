@@ -5,13 +5,13 @@ public class timer : MonoBehaviour
 {
     Text text;
     string sec = "00";
-    [SerializeField] float minutes=1;
-    [SerializeField] float seconds=60;
+    [SerializeField] float minutes = 1;
+    [SerializeField] float seconds = 60;
     // Start is called before the first frame update
     void Start()
     {
         text = GetComponent<Text>();
-        text.text = "0" + minutes+1 + ":" + "00";
+        text.text = "0" + minutes + 1 + ":" + "00";
 
     }
 
@@ -25,7 +25,7 @@ public class timer : MonoBehaviour
         if (minutes > -1)
         {
             text.text = "0" + minutes + ":" + sec;
-            seconds = seconds - Time.deltaTime*3;
+            seconds = seconds - Time.deltaTime * 3;
             sec = Mathf.Ceil(seconds).ToString();
             if (seconds == 0)
             {
@@ -34,6 +34,6 @@ public class timer : MonoBehaviour
                 seconds = 59;
             }
         }
-        
+
     }
 }
