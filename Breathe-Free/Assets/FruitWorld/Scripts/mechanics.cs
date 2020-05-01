@@ -323,8 +323,10 @@ public class mechanics : MonoBehaviour
             if (fwLeaderBoard.privateCode == "") Debug.LogError("You forgot to set the privateCode variable");
 
             fwLeaderBoard.AddScore(userName, (int)(100 * score / (numOfCycles * 5)));
+            //fwLeaderBoard.GetScores();
 
             List<dreamloLeaderBoard.Score> scoreList = fwLeaderBoard.ToListHighToLow();
+            
 
             if (scoreList == null)
             {
