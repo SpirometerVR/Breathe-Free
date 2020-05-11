@@ -13,6 +13,4 @@ public class RandomSkybox : MonoBehaviour
         RenderSettings.skybox = skyBox[Random.Range(0, skyBox.Length)];
     }
 
-    void Update() {}
-
 }
