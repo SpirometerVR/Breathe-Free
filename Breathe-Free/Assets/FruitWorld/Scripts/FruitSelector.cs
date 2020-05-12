@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class select : MonoBehaviour
+public class FruitSelector : MonoBehaviour
 {
 
     public bool stay = false;
@@ -13,11 +13,13 @@ public class select : MonoBehaviour
     private List<Collider> triggerList;
 
 
-    [SerializeField] private mechanics mechanics;
+    [SerializeField] private FruitWorldController mechanics;
 
     Vector3 dir;
 
-
+    /**
+     * Start is called once before the first frame.
+     */
     void Start()
     {
         triggerList = new List<Collider>();
@@ -26,8 +28,12 @@ public class select : MonoBehaviour
         tempDir = new Vector3(0, 1, 0);
     }
 
+    /**
+     * Update is called once per frame.
+     */
     void Update()
     {
+        // Use a raycast based on the camera's direction to target the fruits.
         dir = transform.forward;
         Ray ray = new Ray(transform.position, dir);
 
@@ -66,6 +72,11 @@ public class select : MonoBehaviour
         }
 	}
 
+    /**
+     * Determine the actions on collision. The stones will collide with pebbles
+     * and initially, the fruit will stay at its position and be added to the trigger list.
+     * @param other - the other collision object.
+     */
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("fruits"))
@@ -78,16 +89,11 @@ public class select : MonoBehaviour
         }
     }
 
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    if (other.gameObject.CompareTag("fruits"))
-    //    {
-    //        other.gameObject.transform.GetChild(0).gameObject.SetActive(true);         // glow of the fruit  
-    //    }
-    //}
-
-
-
+    /**
+     * After being added to the trigger list, the fruit will no longer glow and will fall from
+     * the tree.
+     * @param: other - the other object in collision.
+     */
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("fruits"))

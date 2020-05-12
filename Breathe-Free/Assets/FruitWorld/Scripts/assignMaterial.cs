@@ -3,7 +3,7 @@
 public class assignMaterial : MonoBehaviour
 {
     // Start is called before the first frame update
-    private mechanics m;
+    private FruitWorldController m;
     [SerializeField] private Material sky_mat;
     [SerializeField] private Material changeMat;
     private Material currentMat1;
@@ -13,7 +13,7 @@ public class assignMaterial : MonoBehaviour
     {
         currentMat1 = m.fru[Random.Range(0, m.fru.Count)].GetComponent<MeshRenderer>().material;
         currentMat2 = m.fru[Random.Range(0, m.fru.Count)].GetComponent<MeshRenderer>().material;
-        m = GameObject.Find("hand").GetComponent<mechanics>();
+        m = GameObject.Find("hand").GetComponent<FruitWorldController>();
         if (RenderSettings.skybox == sky_mat)
         {
             currentMat1 = changeMat;

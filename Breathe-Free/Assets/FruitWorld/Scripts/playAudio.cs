@@ -5,7 +5,7 @@ using UnityEngine;
 public class playAudio : MonoBehaviour
 {
     [SerializeField] public List<AudioSource> audio;
-    public mechanics m;
+    public FruitWorldController m;
     public pauseMenu p;
     void FixedUpdate()
     {

@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class mechanics : MonoBehaviour
+public class FruitWorldController : MonoBehaviour
 {
+    // Main controller script for Fruit World. This script controls the player actions.
 
     public float flag = 0;
     public GameObject flowerLight;
@@ -20,7 +21,7 @@ public class mechanics : MonoBehaviour
     public bool gameOver = false;
     public int score = 0;
 
-    // For scoreboard;
+    // For leaderboard;
     public GameObject leader;
     dreamloLeaderBoard fwLeaderBoard;
     private bool topScoresReceived = false;
@@ -40,7 +41,7 @@ public class mechanics : MonoBehaviour
     private OSC oscScript;
     private GameObject oscGameObject;
 
-    private select s;
+    private FruitSelector s;
     private float stoneHandDistance;                // for distance between stone and hand
     private float stoneFruitDistance;               // for distance between stone and fruit
 
@@ -56,30 +57,30 @@ public class mechanics : MonoBehaviour
     private void Awake()
     {
     }
+
+    /**
+     * Start is called before the first frame update
+     */
     void Start()
     {
-
         gameOver = false;
 
+        // Find the game objects and connect to OSC for the spirometer.
         oscGameObject = GameObject.Find("OSC");
         oscScript = oscGameObject.GetComponent<OSC>();
         oscScript.SetAddressHandler("/Spirometer/C", BreathData);
-        s = sel.GetComponent<select>();
+        s = sel.GetComponent<FruitSelector>();
 
-        //inhaleTime = 3;
-        //exhaleTime = 3;
-        //numOfCycles = 5;
         cycleCounter = 0;
 
         stoneHandUpdate = true;
         stoneFruitUpdate = true;
 
+        // Instantiate the leaderboard and find the appropriate game objects.
         this.fwLeaderBoard = dreamloLeaderBoard.GetSceneDreamloLeaderboard();
-
         topNameList = GameObject.Find("Top Names List").GetComponent<Text>();
         topScoreList = GameObject.Find("Top Scores List").GetComponent<Text>();
         topRankList = GameObject.Find("Top Ranks List").GetComponent<Text>();
-
 
         stoneHandDistance = 0;
         stoneFruitDistance = 0;
@@ -91,12 +92,16 @@ public class mechanics : MonoBehaviour
 
     }
 
-
+    /**
+     * Receive data from the digital spirometer. This is how the digital spirometer
+     * connects to Unity.
+     */
     void BreathData(OscMessage message)
     {
         float breath_value = message.GetFloat(0);
         Debug.Log(breath_value + " breath");
-        // Turn flower light off if spirometer is not connected.
+
+        // Turn flower light on if spirometer is connected.
         if (breath_value > 0)
         {
             MeshRenderer flowerLightRend = flowerLight.GetComponent<MeshRenderer>();
@@ -110,28 +115,35 @@ public class mechanics : MonoBehaviour
             Material newColor = (Material)Resources.Load("Materials-SQ/Red - SQ", typeof(Material));
             flowerLightRend.material = newColor;
         }
+
+        // Exhale flag.
         if (breath_value <= 1170)
         {
             flag = 1;
         }
+        // Inhale flag.
         else if (breath_value >= 1480)
         {
             flag = 3;
         }
+        // Stagnant flag.
         else
         {
             flag = 2;
         }
     }
 
-
-
+    /**
+     * Update is called once per frame.
+     */
     void Update()
     {
         OVRInput.Update();
 
+        // Display the number of cycles left in the therapy.
         ScoreText.GetComponent<Text>().text = "Cycles Left: " + (numOfCycles - cycleCounter).ToString();
 
+        // Set game over to true once the therapy rounds are completed.
         if (cycleCounter == numOfCycles)
 		{
             gameOver = true;
@@ -140,7 +152,8 @@ public class mechanics : MonoBehaviour
         if (!gameOver)
         {
             leader.SetActive(false);
-            // inhale
+
+            // If there are stones left, bring towards the player on inhale.
             if (canSummon && Input.GetKey(KeyCode.Space) || OVRInput.Get(OVRInput.RawButton.RIndexTrigger) || flag == 1)
             {
                 if (count == stones.Count)
@@ -350,13 +363,21 @@ public class mechanics : MonoBehaviour
             }
         }
     }
+
+    /**
+     * Method used to destroy the game object.
+     * @param: go - the game object being destroyed.
+     */
     IEnumerator destory(GameObject go)
     {
         yield return new WaitForSeconds(3);
         Destroy(go);
     }
 
-
+    /**
+     * Method used to count down the inhale timer once the player starts inhaling.
+     * @param: startVal - the amount of time set for the inhale cycle.
+     */
     IEnumerator countDownInhale(float startVal)
     {
         while (startVal > 0)
@@ -368,6 +389,10 @@ public class mechanics : MonoBehaviour
 
     }
 
+    /**
+     * Method used to count down the exhale timer once the player starts exhaling.
+     * @param: startVal - the amount of time set for the exhale cycle.
+     */
     IEnumerator countDownExhale(float startVal)
     {
         while (startVal > 0)
