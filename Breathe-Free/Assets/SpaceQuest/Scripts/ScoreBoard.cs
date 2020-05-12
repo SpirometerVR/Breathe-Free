@@ -18,7 +18,9 @@ public class ScoreBoard : MonoBehaviour
     private ScoreBoard inhaleScoreCard;
     private ScoreBoard finalScoreCard;
 
-    // Start is called before the first frame update
+    /**
+     * Start is called before the first frame update.
+     */
     void Start()
     {
         // Find all of the score boards under the Canvas object.
@@ -36,7 +38,9 @@ public class ScoreBoard : MonoBehaviour
         totalDiamonds = RocketController.exhaleTargetTime * RocketController.cycles;
     }
 
-    // Update is called once per frame
+    /**
+     * Update is called once per frame.
+     */
     void Update()
     {
         // If the game is over, print the final score alone.

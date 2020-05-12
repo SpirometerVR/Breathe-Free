@@ -4,19 +4,12 @@ using UnityEngine;
 
 public class DiamondClearPath : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    // Destroy Asteroids that are too close to the diamonds.
+    /**
+     * Destroy asteroids that are spawned too close to the diamonds. This ensures
+     * that asteroids are not spawned too close to the diamonds which would make it
+     * more difficult for the player to avoid hitting the asteroids on exhale.
+     * @param: other - the other object in the collider
+     */
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Asteroid"))

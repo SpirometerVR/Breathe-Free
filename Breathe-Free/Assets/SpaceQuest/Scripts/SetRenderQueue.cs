@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Determine render order items.
-// Adjust the render queue in the actual Unity editor.
+// Adjust the render queue in the Unity editor.
 [AddComponentMenu("Rendering/SetRenderQueue")]
 public class SetRenderQueue : MonoBehaviour
 {

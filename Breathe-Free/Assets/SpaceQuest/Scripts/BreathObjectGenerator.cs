@@ -22,15 +22,19 @@ public class BreathObjectGenerator : MonoBehaviour
     private bool isCoroutineExecutingDiamond = false;
     private bool isCoroutineExecutingDiamondDestroy = false;
     private bool isCoroutineExecutingFuelDestroy = false;
-
-    // Start is called before the first frame update
+ 
+    /**
+     * Start is called before the first frame update
+     */
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Rocket");
 		playerScript = player.GetComponent<RocketController>();
 	}
 
-    // Update is called once per frame
+    /**
+     * Update is called once per frame
+     */
     void Update()
     {
         if (!playerScript.gameOver)
@@ -39,6 +43,7 @@ public class BreathObjectGenerator : MonoBehaviour
             {
                 // Destroy any existing diamonds for the inhale phase.
                 StartCoroutine(DestroyDiamonds());
+
                 // If the fuels have not been spawned yet, spawn them.
                 if (!inhaleSpawned)
                 {
@@ -49,6 +54,7 @@ public class BreathObjectGenerator : MonoBehaviour
             {
                 //Destroy all fuel objects still in the game during exhale phase.
                 StartCoroutine(DestroyFuel());
+
                 // If the diamonds have not been spawned yet, spawn them.
                 if (!exhaleSpawned)
                 {
@@ -75,14 +81,20 @@ public class BreathObjectGenerator : MonoBehaviour
         }
     }
 
-    // Spawn the first diamond in front of the Rocket.
+    /**
+     * Determine the appropriate position and spawn the first diamond once the player reaches
+     * the exhalePhase.
+     */
     private void SpawnFirstDiamond()
     {
         Vector3 playerPosition = transform.position;
+
         // Need cross product to produce diamonds in front of Rocket.
         Vector3 playerForward = Vector3.Cross(transform.forward, new Vector3(0, 1, 0));
+
         // Determine the right rotation for the diamond gameObject.
         Quaternion playerRotation = Quaternion.Euler(90, 180, 0);
+
         // Determine the spawn position of the first diamond based on the Rocket's position.
         Vector3 spawnPosition = new Vector3(transform.position.x + RandomXPosition(), 0, playerPosition.z) + new Vector3(0,0,1) * initialDiamondDistance;
         Instantiate(diamondOne, spawnPosition, playerRotation);
@@ -90,12 +102,17 @@ public class BreathObjectGenerator : MonoBehaviour
         inhaleSpawned = false;
     }
 
-    // Spawn the remaining number of diamonds one after another. The number is based on the exhaleDuration float from the RocketController.
+    /**
+     * Spawn the remaining diamonds behind the first diamond. The remaining diamonds will be
+     * spawned at random positions on the x axis. The number of reamining diamonds to be spawned
+     * is based on the exhaleTargetTime set.
+     */
     private void SpawnRemainingDiamonds()
     {
         // Need cross product to produce diamonds in front of Rocket.
         Vector3 playerForward = Vector3.Cross(transform.forward, new Vector3(0, 1, 0));
         Quaternion playerRotation = Quaternion.Euler(90, 180, 0);
+
         // Continue spawning diamonds until their target quantity is reached.
         if (diamondCount < RocketController.exhaleTargetTime)
         {
@@ -117,75 +134,113 @@ public class BreathObjectGenerator : MonoBehaviour
         }
     }
 
+    /**
+     * Spawn the three fuel items behind the space ship during the inhalePhase.
+     */
     private void SpawnFuel()
     {
         Vector3 playerPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         Quaternion playerRotation = Quaternion.Euler(0, 0, 0);
+
         // Spawn fuel relative to the rocket position.
 		Vector3 spawnPosition = playerPosition + new Vector3(0, 0, -30);
 		Instantiate(fuel, spawnPosition, playerRotation);
+
         // Set flags so that inhale spawn is true and update cycle counter.
         inhaleSpawned = true;
         exhaleSpawned = false;
         playerScript.cycleCounter += 1;
     }
 
+    /**
+     * Generate a random x position for the diamond to be spawned at.
+     * @return: random x position.
+     */
     private float RandomXPosition()
     {
         return Random.Range(-50, 50);
     }
 
+    /**
+     * Spawn the first diamond only one time at the start of the exhalePhase. Since Update
+     * is called once per frame, we need to spawn the diamond here so that it doesn't get
+     * created an infinite number of times.
+     */
     private IEnumerator SpawnDiamondItems()
     {
+        // If the coroutine is currently executing, exit so that unlimited diamonds do not get spawned.
         if (isCoroutineExecutingDiamond)
         {
             yield break;
         }
         isCoroutineExecutingDiamond = true;
+
         // Wait 2 seconds to spawn the first diamond
         yield return new WaitForSeconds(2f);
         SpawnFirstDiamond();
         isCoroutineExecutingDiamond = false;
     }
 
-
+    /**
+     * Destroy the diamonds only one time. Since Update is called once per frame, we need to
+     * check whether the diamonds exist here and destroy them here so that we destroy them
+     * once and don't run into errors in trying to destory non existant diamonds.
+     */
     private IEnumerator DestroyDiamonds()
     {
-        if(isCoroutineExecutingDiamondDestroy)
+        // If the coroutine is currently executing, exit so that there are no errors.
+        if (isCoroutineExecutingDiamondDestroy)
         {
             yield break;
         }
         isCoroutineExecutingDiamondDestroy = true;
+
         // Wait 1.5 seconds before destroying diamonds if the exhale is off
         yield return new WaitForSeconds(1f);
+
         // Destroy all diamond objects.
         Destroy(GameObject.FindGameObjectWithTag("Diamond"));
         Destroy(GameObject.FindGameObjectWithTag("Diamond Two"));
         isCoroutineExecutingDiamondDestroy = false;
     }
 
+    /**
+     * Spawn the fuel items only one time at the start of the inhalePhase. Since Update
+     * is called once per frame, we need to spawn the fuel here so that it doesn't get
+     * created an infinite number of times.
+     */
     private IEnumerator SpawnFuelItems()
     {
+        // If the coroutine is currently executing, exit so that unlimited fuels do not get spawned.
         if (isCoroutineExecutingFuel)
         {
             yield break;
         }
         isCoroutineExecutingFuel = true;
+
         // Wait 3.5 seconds to spawn the new fuels
         yield return new WaitForSeconds(3.5f);
         SpawnFuel();
         isCoroutineExecutingFuel = false;
     }
 
+    /**
+     * Destroy the fuel only one time. Since Update is called once per frame, we need to
+     * check whether the fuel exists here and destroy it here so that we destroy it
+     * once and don't run into errors in trying to destory non existant fuel.
+     */
     private IEnumerator DestroyFuel()
     {
+        // If the coroutine is currently executing, exit so that there are no errors.
         if (isCoroutineExecutingFuelDestroy)
         {
             yield break;
         }
         isCoroutineExecutingFuelDestroy = true;
+
 		// Wait 0.8 seconds to destory the remaining fuels
 		yield return new WaitForSeconds(0.8f);
+
         // Destroy all fuel objects.
         Destroy(GameObject.FindGameObjectWithTag("Fuel"));
         Destroy(GameObject.FindGameObjectWithTag("Right Fuel"));

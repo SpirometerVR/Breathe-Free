@@ -6,13 +6,17 @@ public class PlanetRotation : MonoBehaviour
 {
     private float speed;
 
-    // Start is called before the first frame update
+    /**
+     * Start is called before the first frame update
+     */
     void Start()
     {
         speed = Random.Range(1, 2.5f);
     }
 
-    // Update is called once per frame
+    /**
+     * Update is called once per frame
+     */
     void Update()
     {
         // Rotate the planets at a random speed.

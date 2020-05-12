@@ -13,7 +13,9 @@ public class FuelBarController : MonoBehaviour
     private float fuelLevel;
     private float timer = 1f;
 
-    // Start is called before the first frame update
+    /**
+     * Start is called before the first frame update.
+     */
     private void Start()
     {
         // Create a Rocket object & Breath Gen
@@ -24,12 +26,15 @@ public class FuelBarController : MonoBehaviour
         fuelSlider = GameObject.FindGameObjectWithTag("Fuel Bar").GetComponent<Slider>();
     }
 
-    // Update is called once per frame
+    /**
+     * Update is called once per frame
+     */
     private void Update()
     {
         // If the player is inhaling, then increase the fuel bar as they inhale.
         if (playerScript.inhalePhase && playerScript.inhaleIsOn && breathGen.inhaleSpawned)
         {
+            // Reset timer.
             timer = 1f;
             if (fuelSlider.value <= 1)
             {
@@ -61,24 +66,34 @@ public class FuelBarController : MonoBehaviour
         }
     }
 
-    // Method to set fuel to 0 at the start of each inhale.
+    /**
+     * Reset the fuel bar to zero when the cycle is over.
+     */
     private void ResetFuel()
     {
         fuelSlider.value = 0;
     }
 
-    // Method to adjust fuel bar as inhaling.
+    /**
+     * Increase the fuel bar fill as the player inhales.
+     */
     private void IncreaseFuel(float fuel)
     {
         fuelSlider.value = fuel;
     }
 
-    // Method to decrease fuel bar while exhaling.
+    /**
+     * Decrease the fuel bar fill as the player exhales.
+     */
     private void DecreaseFuel()
     {
         fuelSlider.value = fuelLevel - (playerScript.exhaleDuration / RocketController.exhaleTargetTime);
     }
 
+    /**
+     * Return the current fuel level.
+     * @return: feul slider value
+     */
     private float GetFuelLevel()
     {
         return fuelSlider.value;

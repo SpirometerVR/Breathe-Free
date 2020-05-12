@@ -12,7 +12,9 @@ public class DiamondController : MonoBehaviour
     private Vector3 offset = new Vector3(-10, 10, 0);
     private ScoreBoard diamondScores;
 
-    // Start is called before the first frame update
+    /**
+     * Start is called before the first frame update
+     */
     void Start()
     {
         // Find the appropriate GameObjects within the game.
@@ -22,7 +24,9 @@ public class DiamondController : MonoBehaviour
         diamondScores = GameObject.FindGameObjectWithTag("Diamond Score").GetComponent<ScoreBoard>();
     }
 
-    // Update is called once per frame
+    /**
+     * Update is called once per frame
+     */
     void Update()
     {
         // If the player is exhaling, keep the diamond close to the ship.

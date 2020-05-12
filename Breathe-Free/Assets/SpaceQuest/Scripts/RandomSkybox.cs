@@ -6,7 +6,9 @@ public class RandomSkybox : MonoBehaviour
 {
     public Material[] skyBox;
 
-    // Start is called before the first frame update
+    /**
+     * Start is called before the first frame update
+     */
     void Start()
     {
         // Render a random skybox to start the game.

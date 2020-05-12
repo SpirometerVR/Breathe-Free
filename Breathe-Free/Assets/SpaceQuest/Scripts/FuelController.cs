@@ -20,7 +20,9 @@ public class FuelController : MonoBehaviour
 
     private float numFuels = 3;
 
-    // Start is called before the first frame update
+    /**
+     * Start is called before the first frame update
+     */
     void Start()
     {
         // Create a Rocket object
@@ -41,10 +43,12 @@ public class FuelController : MonoBehaviour
         fuelSound = playerScript.fuel;
     }
 
-    // Update is called once per frame
+    /**
+     * Update is called once per frame
+     */
     void Update()
     {
-        // Move the treasure object towards the player when inhaling
+        // Move the fuel object towards the player when inhaling
         if (playerScript.inhalePhase && playerScript.inhaleIsOn)
         {
             // Move the right fuel towards the engine for the first portion of inhaling.
