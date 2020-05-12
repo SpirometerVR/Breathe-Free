@@ -10,7 +10,7 @@ The VR application's goal is to make CF therapy more engaging for children and i
 the therapy completion rate. The application consists of two mini games: Fruit World and Space Quest.
 
 
-### *Mini Games*: 
+### <ins>Mini Games</ins>: 
 #### Fruit World:
 Fruit World is a VR game where the player tries to knock down as many fruits as possible. The game is 
 set in a forest with varying types of fruit trees and greenery. The player inhales to collect stones 
@@ -28,7 +28,7 @@ an unsuccessful inhale attempt. The player will then use that fuel to collect th
 if the player did not inhale completely, the farthest gems will be too far away.
 
 
-### *Useful Links*: 
+### <ins>Useful Links</ins>: 
 #### Game Design Document:
 The GDD can be found [here](https://docs.google.com/document/d/163iNXaMJ0s5D9CaL5JdObc3YMAogoa8xamOYAWbtdLM/edit?usp=sharing).
 
