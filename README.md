@@ -1,7 +1,7 @@
 # Breathe-Free
 CSCI 538 Spring 2020 Final CHLA Project Repository
 
-#### Project Description: 
+#### Project Description:
 This project was built in partnership with Children's Hospital of Los Angeles (CHLA).
 The overall goal of the project is to develop a VR application for children undergoing
 Cystic Fibrosis (CF) therapy. 
