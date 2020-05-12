@@ -1,5 +1,4 @@
 # Breathe-Free
-##### Last Edit Date: 05/11/2020
 CSCI 538 Spring 2020 Final CHLA Project Repository
 
 ##### Project Description: 
